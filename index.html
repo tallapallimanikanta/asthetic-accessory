@@ -994,25 +994,138 @@
     /* ========== RESPONSIVE ========== */
     @media (max-width: 1024px) {
       .products { grid-template-columns: repeat(2, 1fr); }
+      .hero-title { font-size: 3.5rem; }
     }
+
+    /* Tablet & Mobile */
     @media (max-width: 768px) {
       .hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero-right { height: 50vw; }
-      .hero-left { padding: 3rem 5vw; }
-      nav { display: none; }
-      .about-strip { grid-template-columns: 1fr; }
+      .hero-right { height: 50vw; order: -1; }
+      .hero-left { padding: 2rem 5vw; }
+      .hero-eyebrow { font-size: 0.55rem; }
+      .hero-title { font-size: 2.8rem; }
+      .hero-body { font-size: 0.85rem; }
+
+      /* Mobile Navigation */
+      nav {
+        display: none;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        flex-direction: column;
+        padding: 1.5rem;
+        gap: 1rem;
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        z-index: 150;
+      }
+      nav.active { display: flex; animation: slideDown 0.3s ease; }
+      @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .mobile-menu-btn {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: none;
+        padding: 0.5rem;
+      }
+      .mobile-menu-btn span {
+        width: 24px;
+        height: 2px;
+        background: var(--deep);
+        transition: all 0.3s;
+      }
+      .mobile-menu-btn.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+      .mobile-menu-btn.active span:nth-child(2) { opacity: 0; }
+      .mobile-menu-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
+
+      .header-cta { display: none; }
+
+      .about-strip { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 5vw; }
+      .about-stats { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .stat { padding: 1.2rem 1rem; }
+      .stat-num { font-size: 1.8rem; }
+
       .testi-grid { grid-template-columns: 1fr; }
-      .newsletter { flex-direction: column; align-items: flex-start; }
-      .nl-form input { width: 100%; }
+      .testi { padding: 1.5rem 1.2rem; }
+
+      .newsletter { padding: 3rem 5vw; }
+      .nl-text h3 { font-size: 1.5rem; }
       .nl-form { flex-direction: column; width: 100%; }
+      .nl-form input { width: 100%; margin-bottom: 0.8rem; }
+      .nl-form button { width: 100%; }
+
+      .section-intro { padding: 3rem 5vw 2rem; }
+      .filter-row { padding: 1rem 5vw 1.5rem; gap: 0.4rem; }
+      .filt { font-size: 0.55rem; padding: 0.4rem 0.9rem; }
+      .sort-wrapper { margin-left: 0; width: 100%; justify-content: center; }
     }
-    /* Mobile: 2 products per row */
+
+    /* Mobile: Single column products, larger touch targets */
     @media (max-width: 560px) {
-      .products { grid-template-columns: repeat(2, 1fr); }
-      footer { flex-direction: column; text-align: center; }
-      .hero-title { font-size: 2.5rem; }
-      .product-name { font-size: 0.95rem; }
-      .product-desc { font-size: 0.7rem; }
+      /* Disable custom cursor on touch devices */
+      body, a, button { cursor: auto !important; }
+      .cursor, .cursor-ring { display: none; }
+
+      .products { grid-template-columns: 1fr; margin: 0 4vw 3rem; }
+      .product-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+
+      .product-img { aspect-ratio: 1.1; }
+      .product-img .emoji-wrap { font-size: 3.5rem; }
+      .overlay-btn { font-size: 0.6rem; padding: 0.6rem 1.2rem; }
+
+      .product-info { padding: 1rem; }
+      .product-cat { font-size: 0.5rem; }
+      .product-name { font-size: 1rem; }
+      .product-desc { font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+      .price-now { font-size: 1.1rem; }
+      .wishlist-btn { font-size: 1.3rem; padding: 0.3rem; }
+
+      footer { flex-direction: column; text-align: center; gap: 1.2rem; padding: 2rem 4vw; }
+      .footer-links { flex-wrap: wrap; justify-content: center; gap: 1.2rem; }
+
+      .hero-title { font-size: 2.2rem; }
+      .hero-blob { width: 70%; font-size: 5rem; }
+      .hero-tag { bottom: 1rem; right: 1rem; padding: 0.7rem 1rem; font-size: 0.55rem; }
+      .hero-tag strong { font-size: 1.1rem; }
+
+      .marquee-strip { font-size: 0.6rem; padding: 0.5rem 0; }
+      .logo-main { font-size: 1.2rem; }
+      .logo-sub { font-size: 0.5rem; }
+
+      .btn-primary, .btn-ghost { font-size: 0.65rem; padding: 0.8rem 1.5rem; }
+      .modal-content { padding: 2rem 1.5rem; width: 95%; }
+      .modal-title { font-size: 1.5rem; }
+
+      /* Larger touch targets */
+      button, a, input, select { min-height: 44px; }
+      .filt, .sort-select { min-height: 40px; }
+
+      /* Improve cart icon tap area */
+      .cart-icon { padding: 0.5rem; }
+    }
+
+    /* Small mobile */
+    @media (max-width: 380px) {
+      .hero-title { font-size: 1.8rem; }
+      .hero-blob { width: 80%; font-size: 4rem; }
+      .section-intro h2 { font-size: 1.6rem; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Touch device optimizations */
+    @media (hover: none) and (pointer: coarse) {
+      body, a, button, input, select { cursor: auto !important; }
+      .cursor, .cursor-ring { display: none; }
+      .product-card:hover .emoji-wrap { transform: none; }
+      .product-card:hover .product-img img { transform: none; }
+      .btn-primary:hover, .btn-ghost:hover, .login-btn:hover, .header-cta:hover { transform: none; }
     }
   </style>
 </head>
@@ -1045,14 +1158,23 @@
       <div class="logo-main">Æsthetic <span>Accessories</span></div>
       <div class="logo-sub">Curated since 2026 · Ongole</div>
     </div>
-    <nav role="navigation" aria-label="Main navigation">
-      <a href="#shop">Shop</a>
-      <a href="#about">About</a>
-      <a href="#love">Reviews</a>
-      <a href="#contact">Contact</a>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav role="navigation" aria-label="Main navigation" id="mainNav">
+      <a href="#shop" onclick="closeMobileMenu()">Shop</a>
+      <a href="#about" onclick="closeMobileMenu()">About</a>
+      <a href="#love" onclick="closeMobileMenu()">Reviews</a>
+      <a href="#contact" onclick="closeMobileMenu()">Contact</a>
     </nav>
+
     <div class="cart-wrapper">
-      <button class="header-cta">Shop Now</button>
+      <button class="header-cta" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop Now</button>
       <span class="cart-icon" id="cartIcon" aria-label="Shopping cart" role="button" tabindex="0">🛒
         <span class="cart-count" id="cartCount">0</span>
       </span>
@@ -1277,13 +1399,40 @@
     /* ========== CUSTOM CURSOR ========== */
     const cursor = document.getElementById('cursor');
     const ring   = document.getElementById('cursorRing');
-    document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top  = e.clientY + 'px';
-      setTimeout(() => {
-        ring.style.left = e.clientX + 'px';
-        ring.style.top  = e.clientY + 'px';
-      }, 60);
+
+    // Only enable custom cursor on non-touch devices
+    if (window.matchMedia('(hover: hover)').matches) {
+      document.addEventListener('mousemove', e => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top  = e.clientY + 'px';
+        setTimeout(() => {
+          ring.style.left = e.clientX + 'px';
+          ring.style.top  = e.clientY + 'px';
+        }, 60);
+      });
+    }
+
+    /* ========== MOBILE MENU ========== */
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mainNav = document.getElementById('mainNav');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenuBtn.classList.toggle('active');
+      mainNav.classList.toggle('active');
+      document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+    });
+
+    function closeMobileMenu() {
+      mobileMenuBtn.classList.remove('active');
+      mainNav.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Close menu on resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        closeMobileMenu();
+      }
     });
 
     /* ========== AUTH MODAL ========== */
