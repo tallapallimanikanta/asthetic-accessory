@@ -1244,6 +1244,29 @@
     </div>
   </div>
 
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // ============================================
+    // SUPABASE CONFIG
+    // Get these from supabase.com > Project > Settings > API
+    // ============================================
+    const SUPABASE_URL = "https://xllhuzuelofvyhiguidc.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_C6ApykZehCrSqPIzleXwMw_NcaBrY-o";
+
+    // Initialize Supabase with persistent session
+    window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    });
+
+    console.log("✓ Supabase initialized");
+    console.log("URL:", SUPABASE_URL);
+  </script>
+
   <!-- JAVASCRIPT -->
   <script>
     /* ============================================
@@ -1272,14 +1295,17 @@
     const switchText = document.getElementById('switchText');
     const switchLink = document.getElementById('switchLink');
     let isLoginMode = true;
+    let currentUser = null;
 
-    document.getElementById('loginBtn').addEventListener('click', () => {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user) {
+    // Login button - toggle login/logout
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+      if (currentUser) {
         // Logout
-        localStorage.removeItem('user');
+        await window.supabaseClient.auth.signOut();
+        currentUser = null;
         document.getElementById('loginBtn').textContent = 'Login';
         document.getElementById('userProfile').style.display = 'none';
+        document.getElementById('loginBtn').style.display = 'inline-block';
         toast.textContent = 'Logged out successfully ✦';
         showToast();
       } else {
@@ -1321,8 +1347,8 @@
       document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
     }
 
-    // Login form submission
-    loginForm.addEventListener('submit', (e) => {
+    // Login form submission - Supabase Auth
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
@@ -1338,26 +1364,33 @@
       }
 
       if (valid) {
-        // Check against stored users
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        const user = users.find(u => u.email === email && u.password === password);
+        try {
+          const { data, error } = await window.supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+          });
 
-        if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          updateUserDisplay(user);
+          if (error) throw error;
+
+          currentUser = { id: data.user.id, email: data.user.email };
+          updateUserDisplay({ name: data.user.email.split('@')[0], avatar: data.user.email.charAt(0).toUpperCase() });
           closeAuthModal();
-          toast.textContent = `Welcome back, ${user.name} ✦`;
+          toast.textContent = `Welcome back! ✦`;
           showToast();
           loginForm.reset();
-        } else {
+
+          // Load user's cart from Supabase
+          await loadCartFromSupabase(data.user.id);
+        } catch (error) {
           toast.textContent = 'Invalid email or password ✦';
           showToast();
+          console.error('Login error:', error);
         }
       }
     });
 
-    // Signup form submission
-    signupForm.addEventListener('submit', (e) => {
+    // Signup form submission - Supabase Auth
+    signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = document.getElementById('signupName').value;
       const email = document.getElementById('signupEmail').value;
@@ -1378,24 +1411,41 @@
       }
 
       if (valid) {
-        // Check if email already exists
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        if (users.find(u => u.email === email)) {
-          toast.textContent = 'Email already registered ✦';
+        try {
+          const { data, error } = await window.supabaseClient.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+              data: {
+                name: name
+              }
+            }
+          });
+
+          if (error) throw error;
+
+          // Save user profile to database
+          if (data.user) {
+            await window.supabaseClient
+              .from('users')
+              .insert([{ id: data.user.id, name: name, email: email, avatar: name.charAt(0).toUpperCase() }]);
+
+            currentUser = { id: data.user.id, name: name, email: email };
+            updateUserDisplay({ name: name, avatar: name.charAt(0).toUpperCase() });
+            closeAuthModal();
+            toast.textContent = `Welcome, ${name}! ✦`;
+            showToast();
+            signupForm.reset();
+          }
+        } catch (error) {
+          if (error.message.includes('already registered')) {
+            toast.textContent = 'Email already registered ✦';
+          } else {
+            toast.textContent = 'Sign up failed ✦';
+          }
           showToast();
-          return;
+          console.error('Signup error:', error);
         }
-
-        const newUser = { name, email, password, avatar: name.charAt(0).toUpperCase() };
-        users.push(newUser);
-        localStorage.setItem('users', JSON.stringify(users));
-        localStorage.setItem('user', JSON.stringify(newUser));
-
-        updateUserDisplay(newUser);
-        closeAuthModal();
-        toast.textContent = `Welcome, ${name}! ✦`;
-        showToast();
-        signupForm.reset();
       }
     });
 
@@ -1415,14 +1465,8 @@
       document.getElementById('userAvatar').textContent = user.avatar;
     }
 
-    // Check if user is logged in on page load
-    const savedUser = JSON.parse(localStorage.getItem('user'));
-    if (savedUser) {
-      updateUserDisplay(savedUser);
-    }
-
-    /* ========== CART PERSISTENCE ========== */
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    /* ========== SUPABASE AUTH STATE & CART PERSISTENCE ========== */
+    let cart = [];
     const cartCountEl = document.getElementById('cartCount');
     const cartIcon = document.getElementById('cartIcon');
 
@@ -1432,6 +1476,40 @@
       cartCountEl.classList.toggle('visible', count > 0);
     }
 
+    // Save cart to Supabase
+    async function saveCartToSupabase(userId, cartData) {
+      try {
+        // Upsert: update if exists, insert if not
+        const { error } = await window.supabaseClient
+          .from('carts')
+          .upsert({ user_id: userId, items: cartData, updated_at: new Date().toISOString() }, { onConflict: 'user_id' });
+        if (error) throw error;
+      } catch (error) {
+        console.error('Error saving cart:', error);
+      }
+    }
+
+    // Load cart from Supabase
+    async function loadCartFromSupabase(userId) {
+      try {
+        const { data, error } = await window.supabaseClient
+          .from('carts')
+          .select('items')
+          .eq('user_id', userId)
+          .single();
+
+        if (error || !data) {
+          cart = [];
+        } else {
+          cart = data.items || [];
+        }
+        updateCartCount();
+      } catch (error) {
+        console.error('Error loading cart:', error);
+        cart = [];
+      }
+    }
+
     function addToCart(name) {
       const existing = cart.find(item => item.name === name);
       if (existing) {
@@ -1439,8 +1517,16 @@
       } else {
         cart.push({ name, quantity: 1 });
       }
-      localStorage.setItem('cart', JSON.stringify(cart));
       updateCartCount();
+
+      // Save to Supabase if logged in
+      if (currentUser) {
+        saveCartToSupabase(currentUser.id, cart);
+      } else {
+        // Fallback to localStorage for guest users
+        localStorage.setItem('cart', JSON.stringify(cart));
+      }
+
       toast.textContent = `"${name}" added ✦`;
       showToast();
     }
@@ -1462,6 +1548,62 @@
       }
     });
 
+    /* ========== TOAST NOTIFICATION ========== */
+    const toast = document.getElementById('toast');
+    let toastTimer;
+
+    function showToast() {
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+
+    // Listen for auth state changes - runs after toast is defined
+    window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        // User is signed in
+        const { data: userData } = await window.supabaseClient
+          .from('users')
+          .select('name, avatar')
+          .eq('id', session.user.id)
+          .single();
+
+        if (userData) {
+          currentUser = { id: session.user.id, ...userData };
+          updateUserDisplay(userData);
+        } else {
+          currentUser = { id: session.user.id, email: session.user.email };
+        }
+
+        // Load user's cart from Supabase
+        await loadCartFromSupabase(session.user.id);
+
+        // Merge guest cart (localStorage) with stored cart
+        const guestCart = JSON.parse(localStorage.getItem('cart')) || [];
+        if (guestCart.length > 0) {
+          guestCart.forEach(item => {
+            const existing = cart.find(c => c.name === item.name);
+            if (existing) {
+              existing.quantity += item.quantity;
+            } else {
+              cart.push(item);
+            }
+          });
+          await saveCartToSupabase(session.user.id, cart);
+          localStorage.removeItem('cart');
+        }
+      } else {
+        // User is signed out
+        currentUser = null;
+        document.getElementById('loginBtn').textContent = 'Login';
+        document.getElementById('loginBtn').style.display = 'inline-block';
+        document.getElementById('userProfile').style.display = 'none';
+        // Load guest cart from localStorage
+        cart = JSON.parse(localStorage.getItem('cart')) || [];
+        updateCartCount();
+      }
+    });
+
     /* ========== SCROLL TO TOP ========== */
     const scrollTopBtn = document.getElementById('scrollTop');
     window.addEventListener('scroll', () => {
@@ -1477,16 +1619,6 @@
       }
     });
 
-    /* ========== TOAST NOTIFICATION ========== */
-    const toast = document.getElementById('toast');
-    let toastTimer;
-
-    function showToast() {
-      toast.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
-    }
-
     /* ========== PRODUCTS DATA - EDIT THIS SECTION ==========
        To add products with images:
        - Add 'image: "https://example.com/image.jpg"' instead of 'emoji'
@@ -1496,7 +1628,7 @@
        { name:'Gold Ring', category:'rings', price:299, image:'https://...', bg:'#f5eddf', pill:'new', desc:'Description' }
        ========================================================== */
     const products = [
-      { name:'Pearl Drop Earrings',   category:'earrings',  price:349,  oldPrice:499, emoji:'🫧', bg:'#f0e8f0', pill:'sale', desc:'Handcrafted shell pearls with gold-filled hooks' },
+      { name:'Pearl Drop Earrings',   category:'earrings',  price:349,  oldPrice:499, image:'https://drive.google.com/file/d/18XxCY0epITBMc0X3Zh1Gb0mqJchEi3RF/view?usp=drive_link', bg:'#f0e8f0', pill:'sale', desc:'Handcrafted shell pearls with gold-filled hooks' },
       { name:'Dainty Gold Ring',      category:'rings',     price:299,  emoji:'💍',   bg:'#f5eddf', pill:'new',  desc:'Minimalist band with a 14K gold finish' },
       { name:'Layered Sun Necklace',  category:'necklaces', price:449,  emoji:'☀️',   bg:'#fdf0e0', pill:'fav',  desc:'Delicate three-layer chain with celestial charm' },
       { name:'Claw Hair Clip',        category:'hair',      price:199,  emoji:'🦋',   bg:'#eaf0f5', pill:'new',  desc:'Oversized tort acetate, strong hold' },
@@ -1616,5 +1748,37 @@
     renderProducts();
     updateCartCount();
   </script>
+
+  <!--
+    ============================================
+    FIREBASE SECURITY RULES - SETUP IN CONSOLE
+    ============================================
+
+    Go to Firebase Console > Firestore Database > Rules
+    and paste these rules:
+
+    rules_version = '2';
+    service cloud.firestore {
+      match /databases/{database}/documents {
+        // Users collection - users can only read/write their own data
+        match /users/{userId} {
+          allow read: if request.auth != null && request.auth.uid == userId;
+          allow write: if request.auth != null && request.auth.uid == userId;
+        }
+
+        // Carts collection - users can only read/write their own cart
+        match /carts/{userId} {
+          allow read: if request.auth != null && request.auth.uid == userId;
+          allow write: if request.auth != null && request.auth.uid == userId;
+        }
+      }
+    }
+
+    This ensures:
+    - Users can only access their own data
+    - No one can read/write other users' carts
+    - Authentication is required for all operations
+    ============================================
+  -->
 </body>
 </html>
