@@ -40,6 +40,20 @@
       --border:  rgba(43,31,26,0.1);  /* Border color */
     }
 
+    /* Dark Theme */
+    [data-theme="dark"] {
+      --blush:   #1a1a2e;      /* Dark blue background */
+      --rose:    #c9a8a0;      /* Muted rose */
+      --deep:    #f0e8e0;      /* Light text */
+      --wine:    #a85858;      /* Lighter wine */
+      --sand:    #2a2a3e;      /* Dark sand */
+      --gold:    #d4a86a;      /* Brighter gold */
+      --gold-lt: #e8c89a;      /* Light gold */
+      --muted:   #b8a89e;      /* Lighter muted */
+      --white:   #16162a;      /* Dark background */
+      --border:  rgba(240,232,224,0.1);  /* Light border */
+    }
+
     ::selection { background: var(--rose); color: var(--deep); }
     html { scroll-behavior: smooth; }
 
@@ -146,6 +160,10 @@
       background: rgba(253,250,248,0.95);
       backdrop-filter: blur(12px);
       z-index: 200;
+      transition: background 0.3s;
+    }
+    [data-theme="dark"] header {
+      background: rgba(22,22,42,0.95);
     }
     .logo-wrap { display: flex; flex-direction: column; gap: 0; line-height: 1; }
     .logo-main {
@@ -797,6 +815,50 @@
       letter-spacing: 0.12em;
     }
 
+    /* ========== THEME TOGGLE ========== */
+    .theme-toggle {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      width: 44px;
+      height: 44px;
+      background: #1a1a2e;
+      color: #d4a86a;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 400;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      animation: rotate 3s linear infinite;
+    }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      background: var(--wine);
+      animation-play-state: paused;
+    }
+    [data-theme="light"] .theme-toggle {
+      background: var(--deep);
+      color: var(--gold-lt);
+    }
+    @media (max-width: 768px) {
+      .theme-toggle {
+        bottom: 1rem;
+        left: 1rem;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+    }
+
     /* ========== SCROLL TO TOP ========== */
     .scroll-top {
       position: fixed;
@@ -1311,6 +1373,9 @@
     <div class="footer-copy">© 2026 Æsthetic Accessories. All rights reserved.</div>
   </footer>
 
+  <!-- THEME TOGGLE BUTTON -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light theme">🌙</button>
+
   <!-- TOAST NOTIFICATION -->
   <div class="toast" id="toast">Added to cart ✦</div>
 
@@ -1400,8 +1465,10 @@
     const cursor = document.getElementById('cursor');
     const ring   = document.getElementById('cursorRing');
 
-    // Only enable custom cursor on non-touch devices
-    if (window.matchMedia('(hover: hover)').matches) {
+    // Only enable custom cursor on desktop (non-touch, screen > 768px)
+    const isDesktop = window.matchMedia('(hover: hover)').matches && window.innerWidth > 768;
+
+    if (isDesktop) {
       document.addEventListener('mousemove', e => {
         cursor.style.left = e.clientX + 'px';
         cursor.style.top  = e.clientY + 'px';
@@ -1410,6 +1477,10 @@
           ring.style.top  = e.clientY + 'px';
         }, 60);
       });
+    } else {
+      // Hide cursor elements on mobile
+      cursor.style.display = 'none';
+      ring.style.display = 'none';
     }
 
     /* ========== MOBILE MENU ========== */
@@ -1768,6 +1839,27 @@
       }
     });
 
+    /* ========== THEME TOGGLE ========== */
+    const themeToggle = document.getElementById('themeToggle');
+
+    // Load saved theme from localStorage
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon(newTheme);
+    });
+
+    function updateThemeIcon(theme) {
+      themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+
     /* ========== PRODUCTS DATA - EDIT THIS SECTION ==========
        To add products with images:
        - Add 'image: "https://example.com/image.jpg"' instead of 'emoji'
@@ -1785,14 +1877,14 @@
        4. Use format: https://drive.google.com/uc?export=view&id=FILE_ID
        ============================================ */
     const products = [
-      { name:'Purple Crocket',   category:'earrings',  price:200,  oldPrice:300, image:'https://i.ibb.co/gZyhsbXy/rose.jpg', bg:'#f0e8f0', pill:'sale', desc:'Handcrafted shell pearls with gold-filled hooks' },
-      { name:'Dainty Gold Ring',      category:'rings',     price:299,  emoji:'💍',   bg:'#f5eddf', pill:'new',  desc:'Minimalist band with a 14K gold finish' },
-      { name:'Layered Sun Necklace',  category:'necklaces', price:449,  emoji:'☀️',   bg:'#fdf0e0', pill:'fav',  desc:'Delicate three-layer chain with celestial charm' },
-      { name:'Claw Hair Clip',        category:'hair',      price:199,  emoji:'🦋',   bg:'#eaf0f5', pill:'new',  desc:'Oversized tort acetate, strong hold' },
-      { name:'Star Stud Set',         category:'earrings',  price:249,  oldPrice:349, emoji:'⭐',  bg:'#f5f0e0', pill:'sale', desc:'Set of 3 star studs in silver & gold' },
-      { name:'Beaded Bracelet',       category:'bracelets', price:179,  emoji:'📿',   bg:'#fae8ea', pill:null,   desc:'Hand-strung semi-precious stone beads' },
-      { name:'Twisted Hoop Earrings', category:'earrings',  price:379,  emoji:'⭕',   bg:'#edf5ed', pill:'new',  desc:'Textured gold-tone twisted hoops, 30mm' },
-      { name:'Crystal Hair Pins',     category:'hair',      price:149,  oldPrice:199, emoji:'✨',  bg:'#f5edf5', pill:'sale', desc:'Set of 4 crystal-tipped bobby pins' },
+      { name:'Purple Crocket',   category:'earrings',  price:200,  oldPrice:300, image:'https://i.ibb.co/gZyhsbXy/rose.jpg', bg:'#f0e8f0', pill:'sale',},
+      { name:'Dainty Gold Ring',      category:'rings',     price:299,  emoji:'💍',   bg:'#f5eddf', pill:'new',},
+      { name:'Layered Sun Necklace',  category:'necklaces', price:449,  emoji:'☀️',   bg:'#fdf0e0', pill:'fav',},
+      { name:'Claw Hair Clip',        category:'hair',      price:199,  emoji:'🦋',   bg:'#eaf0f5', pill:'new',},
+      { name:'Star Stud Set',         category:'earrings',  price:249,  oldPrice:349, emoji:'⭐',  bg:'#f5f0e0',},
+      { name:'Beaded Bracelet',       category:'bracelets', price:179,  emoji:'📿',   bg:'#fae8ea', pill:null,},
+      { name:'Twisted Hoop Earrings', category:'earrings',  price:379,  emoji:'⭕',   bg:'#edf5ed', pill:'new',},
+      { name:'Crystal Hair Pins',     category:'hair',      price:149,  oldPrice:199, emoji:'✨',  bg:'#f5edf5',},
     ];
 
     let currentFilter = 'all';
