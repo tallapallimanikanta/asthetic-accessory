@@ -3,27 +3,72 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Æsthetic Accessories</title>
+  <title>Æsthetic Accessories | Handcrafted Jewelry & Accessories in Ongole</title>
+  <meta name="description" content="Handpicked jewelry and accessories for the aesthetic soul. Rings, earrings, necklaces, bracelets & more. Free shipping on orders over ₹999. Based in Ongole."/>
+  <meta name="keywords" content="jewelry, accessories, earrings, rings, necklaces, bracelets, hair accessories, aesthetic, Ongole, handcrafted, artisan"/>
+  <meta name="author" content="Æsthetic Accessories"/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:title" content="Æsthetic Accessories | Wear your personality, beautifully"/>
+  <meta property="og:description" content="Handpicked jewelry and accessories for the aesthetic soul. Free shipping on orders over ₹999."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:locale" content="en_IN"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Æsthetic Accessories"/>
+  <meta name="twitter:description" content="Handpicked jewelry and accessories for the aesthetic soul."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>"/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+
+  <!-- ============================================
+       CSS STYLES - Organized by section
+       Edit the variables in :root to change colors
+       ============================================ -->
   <style>
+    /* ========== RESET & BASE ========== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ========== COLOR VARIABLES - Edit these to change theme ========== */
     :root {
-      --blush:   #f7ede8;
-      --rose:    #e8c4b8;
-      --deep:    #2b1f1a;
-      --wine:    #7a3f3f;
-      --sand:    #f2e8de;
-      --gold:    #c9975a;
-      --gold-lt: #e0bb8a;
-      --muted:   #9b7a6e;
-      --white:   #fdfaf8;
-      --border:  rgba(43,31,26,0.1);
+      --blush:   #f7ede8;      /* Light pink background */
+      --rose:    #e8c4b8;      /* Rose accent */
+      --deep:    #2b1f1a;      /* Dark brown text */
+      --wine:    #7a3f3f;      /* Wine red accent */
+      --sand:    #f2e8de;      /* Sand background */
+      --gold:    #c9975a;      /* Gold primary */
+      --gold-lt: #e0bb8a;      /* Light gold */
+      --muted:   #9b7a6e;      /* Muted text */
+      --white:   #fdfaf8;      /* White background */
+      --border:  rgba(43,31,26,0.1);  /* Border color */
     }
 
     ::selection { background: var(--rose); color: var(--deep); }
-
     html { scroll-behavior: smooth; }
+
+    /* ========== SKIP LINK (ACCESSIBILITY) ========== */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: fixed;
+      left: 50%;
+      top: 1rem;
+      transform: translateX(-50%);
+      width: auto;
+      height: auto;
+      overflow: visible;
+      z-index: 9999;
+      padding: 1rem 2rem;
+      background: var(--deep);
+      color: var(--gold-lt);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
 
     body {
       font-family: 'Jost', sans-serif;
@@ -32,7 +77,7 @@
       cursor: none;
     }
 
-    /* ── CUSTOM CURSOR ── */
+    /* ========== CUSTOM CURSOR ========== */
     .cursor {
       width: 10px; height: 10px;
       background: var(--gold);
@@ -57,7 +102,7 @@
     body:has(a:hover) .cursor, body:has(button:hover) .cursor { width: 18px; height: 18px; }
     body:has(a:hover) .cursor-ring, body:has(button:hover) .cursor-ring { width: 56px; height: 56px; border-color: var(--wine); }
 
-    /* ── GRAIN OVERLAY ── */
+    /* ========== GRAIN OVERLAY ========== */
     body::after {
       content:'';
       position:fixed;
@@ -67,7 +112,7 @@
       z-index:1000;
     }
 
-    /* ── MARQUEE STRIP ── */
+    /* ========== MARQUEE STRIP ========== */
     .marquee-strip {
       background: var(--deep);
       color: var(--gold-lt);
@@ -89,7 +134,7 @@
       to   { transform: translateX(-50%); }
     }
 
-    /* ── HEADER ── */
+    /* ========== HEADER ========== */
     header {
       display: flex;
       align-items: center;
@@ -102,7 +147,6 @@
       backdrop-filter: blur(12px);
       z-index: 200;
     }
-
     .logo-wrap { display: flex; flex-direction: column; gap: 0; line-height: 1; }
     .logo-main {
       font-family: 'Playfair Display', serif;
@@ -120,7 +164,6 @@
       font-weight: 300;
       margin-top: 2px;
     }
-
     nav {
       display: flex;
       gap: 2.2rem;
@@ -131,7 +174,6 @@
     }
     nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
     nav a:hover { color: var(--gold); }
-
     .header-cta {
       font-size: 0.68rem;
       letter-spacing: 0.14em;
@@ -147,7 +189,58 @@
     }
     .header-cta:hover { background: var(--deep); color: var(--gold-lt); }
 
-    /* ── HERO ── */
+    /* ========== CART COUNTER ========== */
+    .cart-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .cart-icon {
+      font-size: 1.2rem;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .cart-icon:hover { transform: scale(1.1); }
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--wine);
+      color: white;
+      font-size: 0.6rem;
+      font-weight: 700;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+      opacity: 0;
+      transform: scale(0);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .cart-count.visible { opacity: 1; transform: scale(1); }
+
+    /* ========== LOGIN BUTTON ========== */
+    .login-btn {
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.2rem;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      background: transparent;
+      cursor: none;
+      transition: all 0.25s;
+      font-family: 'Jost', sans-serif;
+      font-weight: 400;
+    }
+    .login-btn:hover { background: var(--gold); color: var(--deep); }
+
+    /* ========== HERO SECTION ========== */
     .hero {
       min-height: 88vh;
       display: grid;
@@ -155,7 +248,6 @@
       position: relative;
       overflow: hidden;
     }
-
     .hero-left {
       display: flex;
       flex-direction: column;
@@ -164,7 +256,6 @@
       position: relative;
       z-index: 2;
     }
-
     .hero-eyebrow {
       font-size: 0.65rem;
       letter-spacing: 0.3em;
@@ -183,7 +274,6 @@
       height: 1px;
       background: var(--gold);
     }
-
     .hero-title {
       font-family: 'Playfair Display', serif;
       font-size: clamp(3rem, 5.5vw, 5.2rem);
@@ -193,7 +283,6 @@
       margin-bottom: 1.8rem;
     }
     .hero-title em { font-style: italic; color: var(--wine); }
-
     .hero-body {
       font-size: 0.95rem;
       color: var(--muted);
@@ -202,9 +291,7 @@
       font-weight: 300;
       margin-bottom: 2.5rem;
     }
-
-    .hero-btns { display: flex; gap: 1rem; align-items: center; }
-
+    .hero-btns { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
     .btn-primary {
       font-family: 'Jost', sans-serif;
       font-size: 0.72rem;
@@ -218,7 +305,7 @@
       transition: background 0.25s, transform 0.2s;
     }
     .btn-primary:hover { background: var(--wine); transform: translateY(-2px); }
-
+    .btn-primary:focus { outline: 2px solid var(--gold); outline-offset: 2px; }
     .btn-ghost {
       font-family: 'Jost', sans-serif;
       font-size: 0.72rem;
@@ -233,7 +320,7 @@
       transition: color 0.2s, border-color 0.2s;
     }
     .btn-ghost:hover { color: var(--gold); border-color: var(--gold); }
-
+    .btn-ghost:focus { outline: 2px solid var(--gold); outline-offset: 2px; }
     .hero-right {
       position: relative;
       background: var(--blush);
@@ -242,14 +329,12 @@
       justify-content: center;
       overflow: hidden;
     }
-
     .hero-right::before {
       content: '';
       position: absolute;
       inset: 0;
       background: radial-gradient(ellipse at 60% 40%, rgba(201,151,90,0.18) 0%, transparent 65%);
     }
-
     .hero-blob {
       width: 60%;
       aspect-ratio: 1;
@@ -262,7 +347,6 @@
       animation: morph 8s ease-in-out infinite, float 6s ease-in-out infinite;
       box-shadow: 0 30px 80px rgba(122,63,63,0.15);
     }
-
     @keyframes morph {
       0%,100% { border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%; }
       33%      { border-radius: 40% 60% 30% 70% / 60% 40% 60% 40%; }
@@ -272,7 +356,6 @@
       0%,100% { transform: translateY(0); }
       50%      { transform: translateY(-18px); }
     }
-
     .hero-tag {
       position: absolute;
       bottom: 3rem;
@@ -295,7 +378,7 @@
       color: white;
     }
 
-    /* ── SECTION INTRO ── */
+    /* ========== SECTION INTRO ========== */
     .section-intro {
       text-align: center;
       padding: 5rem 5vw 3rem;
@@ -324,14 +407,41 @@
       font-weight: 300;
     }
 
-    /* ── FILTER ── */
+    /* ========== FILTER & SORT ========== */
     .filter-row {
       display: flex;
       gap: 0.5rem;
       justify-content: center;
       padding: 1.5rem 5vw 2.5rem;
       flex-wrap: wrap;
+      align-items: center;
     }
+    .sort-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-left: 1rem;
+    }
+    .sort-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .sort-select {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.8rem;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--deep);
+      cursor: pointer;
+      transition: all 0.22s;
+      outline: none;
+    }
+    .sort-select:hover, .sort-select:focus { border-color: var(--deep); }
     .filt {
       font-family: 'Jost', sans-serif;
       font-size: 0.62rem;
@@ -349,8 +459,9 @@
       color: var(--gold-lt);
       border-color: var(--deep);
     }
+    .filt:focus { outline: 2px solid var(--gold); outline-offset: 2px; }
 
-    /* ── PRODUCT GRID ── */
+    /* ========== PRODUCT GRID - 2 columns on mobile ========== */
     .products {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -359,7 +470,6 @@
       border-left: 1px solid var(--border);
       margin: 0 5vw 5rem;
     }
-
     .product-card {
       border-right: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
@@ -369,12 +479,10 @@
       overflow: hidden;
       animation: cardIn 0.55s ease both;
     }
-
     @keyframes cardIn {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
     .product-card:nth-child(1) { animation-delay: 0.05s; }
     .product-card:nth-child(2) { animation-delay: 0.1s; }
     .product-card:nth-child(3) { animation-delay: 0.15s; }
@@ -384,6 +492,7 @@
     .product-card:nth-child(7) { animation-delay: 0.35s; }
     .product-card:nth-child(8) { animation-delay: 0.4s; }
 
+    /* ========== PRODUCT IMAGE - Supports both images and emojis ========== */
     .product-img {
       aspect-ratio: 1;
       position: relative;
@@ -394,7 +503,13 @@
       font-size: 4.5rem;
       transition: background 0.4s;
     }
-
+    .product-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .product-card:hover .product-img img { transform: scale(1.08); }
     .product-img .emoji-wrap {
       transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
       display: flex;
@@ -403,9 +518,7 @@
       width: 100%;
       height: 100%;
     }
-
     .product-card:hover .emoji-wrap { transform: scale(1.12) rotate(-4deg); }
-
     .product-img .overlay {
       position: absolute;
       inset: 0;
@@ -431,6 +544,7 @@
       transition: transform 0.3s;
       font-weight: 500;
     }
+    .overlay-btn:focus { outline: 2px solid var(--deep); outline-offset: 2px; }
     .product-card:hover .overlay-btn { transform: translateY(0); }
 
     .pill {
@@ -442,6 +556,7 @@
       text-transform: uppercase;
       padding: 0.28rem 0.7rem;
       font-weight: 500;
+      z-index: 2;
     }
     .pill-new  { background: var(--deep); color: var(--gold-lt); }
     .pill-sale { background: var(--wine); color: white; }
@@ -463,13 +578,13 @@
     }
     .product-name {
       font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 400;
       color: var(--deep);
       line-height: 1.25;
     }
     .product-desc {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: var(--muted);
       line-height: 1.6;
       font-weight: 300;
@@ -484,11 +599,11 @@
     .price-block { display: flex; align-items: baseline; gap: 0.5rem; }
     .price-now {
       font-family: 'Playfair Display', serif;
-      font-size: 1.35rem;
+      font-size: 1.2rem;
       color: var(--deep);
     }
     .price-old {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--muted);
       text-decoration: line-through;
       font-style: italic;
@@ -503,8 +618,9 @@
       padding: 0;
     }
     .wishlist-btn:hover, .wishlist-btn.active { color: var(--wine); transform: scale(1.2); }
+    .wishlist-btn:focus { outline: 2px solid var(--wine); outline-offset: 2px; }
 
-    /* ── ABOUT STRIP ── */
+    /* ========== ABOUT SECTION ========== */
     .about-strip {
       background: var(--blush);
       padding: 5rem 5vw;
@@ -515,7 +631,6 @@
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
-
     .about-text .eyebrow {
       font-size: 0.62rem;
       letter-spacing: 0.3em;
@@ -538,7 +653,6 @@
       font-weight: 300;
       margin-bottom: 1rem;
     }
-
     .about-stats {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -565,7 +679,7 @@
       color: var(--muted);
     }
 
-    /* ── TESTIMONIALS ── */
+    /* ========== TESTIMONIALS ========== */
     .testimonials {
       padding: 5rem 5vw;
       text-align: center;
@@ -604,7 +718,7 @@
       color: var(--muted);
     }
 
-    /* ── NEWSLETTER ── */
+    /* ========== NEWSLETTER ========== */
     .newsletter {
       background: var(--deep);
       padding: 4.5rem 5vw;
@@ -656,7 +770,7 @@
     }
     .nl-form button:hover { background: var(--gold-lt); }
 
-    /* ── FOOTER ── */
+    /* ========== FOOTER ========== */
     footer {
       padding: 2.5rem 5vw;
       display: flex;
@@ -683,7 +797,39 @@
       letter-spacing: 0.12em;
     }
 
-    /* ── CART TOAST ── */
+    /* ========== SCROLL TO TOP ========== */
+    .scroll-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 44px;
+      height: 44px;
+      background: var(--deep);
+      color: var(--gold-lt);
+      border: none;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .scroll-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .scroll-top:hover {
+      background: var(--wine);
+      transform: translateY(-4px);
+    }
+
+    /* ========== TOAST NOTIFICATION ========== */
     .toast {
       position: fixed;
       bottom: 2rem;
@@ -701,7 +847,151 @@
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
 
-    /* ── RESPONSIVE ── */
+    /* ========== LOGIN/SIGNUP MODAL ========== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(43,31,26,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-content {
+      background: var(--white);
+      padding: 3rem 2.5rem;
+      border-radius: 4px;
+      max-width: 420px;
+      width: 90%;
+      position: relative;
+      transform: translateY(-20px);
+      transition: transform 0.3s;
+    }
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: none;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: var(--deep); }
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      color: var(--deep);
+    }
+    .modal-subtitle {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--deep);
+      margin-bottom: 0.4rem;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--deep);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus {
+      border-color: var(--gold);
+    }
+    .form-group input.error {
+      border-color: var(--wine);
+    }
+    .error-msg {
+      font-size: 0.7rem;
+      color: var(--wine);
+      margin-top: 0.3rem;
+      display: none;
+    }
+    .error-msg.visible { display: block; }
+    .modal-submit {
+      width: 100%;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 1rem;
+      background: var(--deep);
+      color: var(--gold-lt);
+      border: none;
+      cursor: none;
+      transition: background 0.25s;
+      font-weight: 500;
+      margin-top: 0.5rem;
+    }
+    .modal-submit:hover { background: var(--wine); }
+    .modal-switch {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .modal-switch a {
+      color: var(--gold);
+      text-decoration: none;
+      cursor: none;
+    }
+    .modal-switch a:hover { text-decoration: underline; }
+
+    /* ========== USER PROFILE ========== */
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: none;
+    }
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--deep);
+    }
+    .user-name {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--deep);
+    }
+
+    /* ========== RESPONSIVE ========== */
     @media (max-width: 1024px) {
       .products { grid-template-columns: repeat(2, 1fr); }
     }
@@ -716,19 +1006,24 @@
       .nl-form input { width: 100%; }
       .nl-form { flex-direction: column; width: 100%; }
     }
+    /* Mobile: 2 products per row */
     @media (max-width: 560px) {
-      .products { grid-template-columns: 1fr; }
+      .products { grid-template-columns: repeat(2, 1fr); }
       footer { flex-direction: column; text-align: center; }
+      .hero-title { font-size: 2.5rem; }
+      .product-name { font-size: 0.95rem; }
+      .product-desc { font-size: 0.7rem; }
     }
   </style>
 </head>
 <body>
 
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
 
-  <!-- MARQUEE -->
-  <div class="marquee-strip">
+  <!-- MARQUEE STRIP -->
+  <div class="marquee-strip" role="marquee" aria-label="Announcements">
     <div class="marquee-inner">
       <span>New Arrivals Just Dropped</span><span class="dot">✦</span>
       <span>Free Shipping on Orders Over ₹999</span><span class="dot">✦</span>
@@ -741,22 +1036,35 @@
     </div>
   </div>
 
+  <!-- SKIP LINK FOR ACCESSIBILITY -->
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
   <!-- HEADER -->
-  <header>
+  <header role="banner">
     <div class="logo-wrap">
       <div class="logo-main">Æsthetic <span>Accessories</span></div>
       <div class="logo-sub">Curated since 2026 · Ongole</div>
     </div>
-    <nav>
+    <nav role="navigation" aria-label="Main navigation">
       <a href="#shop">Shop</a>
       <a href="#about">About</a>
       <a href="#love">Reviews</a>
       <a href="#contact">Contact</a>
     </nav>
-    <button class="header-cta">Shop Now</button>
+    <div class="cart-wrapper">
+      <button class="header-cta">Shop Now</button>
+      <span class="cart-icon" id="cartIcon" aria-label="Shopping cart" role="button" tabindex="0">🛒
+        <span class="cart-count" id="cartCount">0</span>
+      </span>
+      <button class="login-btn" id="loginBtn">Login</button>
+      <div class="user-profile" id="userProfile" style="display: none;">
+        <div class="user-avatar" id="userAvatar">U</div>
+        <span class="user-name" id="userName">User</span>
+      </div>
+    </div>
   </header>
 
-  <!-- HERO -->
+  <!-- HERO SECTION -->
   <section class="hero">
     <div class="hero-left">
       <div class="hero-eyebrow">Spring Collection 2026</div>
@@ -782,78 +1090,93 @@
     </div>
   </section>
 
-  <!-- SHOP SECTION -->
-  <section id="shop">
-    <div class="section-intro">
-      <div class="eyebrow">✦ Our Collection ✦</div>
-      <h2>Pieces you'll <em>love forever</em></h2>
-      <p>From delicate rings to statement earrings — every item is chosen with intention, style, and a little obsession.</p>
-    </div>
+  <!-- MAIN CONTENT -->
+  <main id="main-content">
 
-    <div class="filter-row">
-      <button class="filt active" onclick="filterCards('all',this)">All</button>
-      <button class="filt" onclick="filterCards('rings',this)">Rings</button>
-      <button class="filt" onclick="filterCards('earrings',this)">Earrings</button>
-      <button class="filt" onclick="filterCards('necklaces',this)">Necklaces</button>
-      <button class="filt" onclick="filterCards('bracelets',this)">Bracelets</button>
-      <button class="filt" onclick="filterCards('hair',this)">Hair Accessories</button>
-    </div>
-
-    <div class="products" id="productGrid"></div>
-  </section>
-
-  <!-- ABOUT -->
-  <section class="about-strip" id="about">
-    <div class="about-text">
-      <div class="eyebrow">✦ Our Story</div>
-      <h2>Born from a love of <em>beautiful things</em></h2>
-      <p>Æsthetic Accessories started as a personal obsession — scouring markets, finding unique pieces, and sharing them with friends who always asked "where did you get that?"</p>
-      <p>Today, we're a small but passionate team based in Ongole, dedicated to bringing you accessories that feel personal, intentional, and genuinely beautiful. Every piece is selected by hand. No mass production. No compromise.</p>
-    </div>
-    <div class="about-stats">
-      <div class="stat"><div class="stat-num">200+</div><div class="stat-label">Happy Customers</div></div>
-      <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Unique Pieces</div></div>
-      <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">Average Rating</div></div>
-      <div class="stat"><div class="stat-num">Est.</div><div class="stat-label">2026</div></div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section class="testimonials" id="love">
-    <div class="eyebrow">✦ What Our Customers Say ✦</div>
-    <div class="testi-grid">
-      <div class="testi">
-        <div class="stars">★★★★★</div>
-        <div class="testi-text">"The pearl earrings I ordered are even more beautiful in person. The packaging was so thoughtful — it felt like a gift to myself."</div>
-        <div class="testi-author">— Ananya R., Ongole</div>
+    <!-- SHOP SECTION -->
+    <section id="shop" aria-label="Product collection">
+      <div class="section-intro">
+        <div class="eyebrow">✦ Our Collection ✦</div>
+        <h2>Pieces you'll <em>love forever</em></h2>
+        <p>From delicate rings to statement earrings — every item is chosen with intention, style, and a little obsession.</p>
       </div>
-      <div class="testi">
-        <div class="stars">★★★★★</div>
-        <div class="testi-text">"I've ordered three times and every single piece is perfect. The quality for the price is unbeatable. Truly aesthetic finds!"</div>
-        <div class="testi-author">— Priya S., Bangalore</div>
-      </div>
-      <div class="testi">
-        <div class="stars">★★★★★</div>
-        <div class="testi-text">"The gold layered necklace gets me compliments every single time I wear it. Obsessed doesn't even cover it."</div>
-        <div class="testi-author">— Meera T., Mumbai</div>
-      </div>
-    </div>
-  </section>
 
-  <!-- NEWSLETTER -->
-  <section class="newsletter" id="contact">
-    <div class="nl-text">
-      <h3>Stay in the <em>loop</em></h3>
-      <p>New drops, exclusive offers, and aesthetic inspo — straight to your inbox.</p>
-    </div>
-    <div class="nl-form">
-      <input type="email" placeholder="your@email.com"/>
-      <button onclick="subscribeNewsletter(this)">Subscribe</button>
-    </div>
-  </section>
+      <!-- FILTER & SORT -->
+      <div class="filter-row">
+        <button class="filt active" onclick="filterCards('all',this)">All</button>
+        <button class="filt" onclick="filterCards('rings',this)">Rings</button>
+        <button class="filt" onclick="filterCards('earrings',this)">Earrings</button>
+        <button class="filt" onclick="filterCards('necklaces',this)">Necklaces</button>
+        <button class="filt" onclick="filterCards('bracelets',this)">Bracelets</button>
+        <button class="filt" onclick="filterCards('hair',this)">Hair Accessories</button>
+        <div class="sort-wrapper">
+          <span class="sort-label">Sort:</span>
+          <select class="sort-select" id="sortSelect" onchange="sortProducts()" aria-label="Sort products">
+            <option value="default">Default</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- PRODUCT GRID -->
+      <div class="products" id="productGrid"></div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about-strip" id="about">
+      <div class="about-text">
+        <div class="eyebrow">✦ Our Story</div>
+        <h2>Born from a love of <em>beautiful things</em></h2>
+        <p>Æsthetic Accessories started as a personal obsession — scouring markets, finding unique pieces, and sharing them with friends who always asked "where did you get that?"</p>
+        <p>Today, we're a small but passionate team based in Ongole, dedicated to bringing you accessories that feel personal, intentional, and genuinely beautiful. Every piece is selected by hand. No mass production. No compromise.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat"><div class="stat-num">200+</div><div class="stat-label">Happy Customers</div></div>
+        <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Unique Pieces</div></div>
+        <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">Average Rating</div></div>
+        <div class="stat"><div class="stat-num">Est.</div><div class="stat-label">2026</div></div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section class="testimonials" id="love">
+      <div class="eyebrow">✦ What Our Customers Say ✦</div>
+      <div class="testi-grid">
+        <div class="testi">
+          <div class="stars">★★★★★</div>
+          <div class="testi-text">"The pearl earrings I ordered are even more beautiful in person. The packaging was so thoughtful — it felt like a gift to myself."</div>
+          <div class="testi-author">— Ananya R., Ongole</div>
+        </div>
+        <div class="testi">
+          <div class="stars">★★★★★</div>
+          <div class="testi-text">"I've ordered three times and every single piece is perfect. The quality for the price is unbeatable. Truly aesthetic finds!"</div>
+          <div class="testi-author">— Priya S., Bangalore</div>
+        </div>
+        <div class="testi">
+          <div class="stars">★★★★★</div>
+          <div class="testi-text">"The gold layered necklace gets me compliments every single time I wear it. Obsessed doesn't even cover it."</div>
+          <div class="testi-author">— Meera T., Mumbai</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER SECTION -->
+    <section class="newsletter" id="contact">
+      <div class="nl-text">
+        <h3>Stay in the <em>loop</em></h3>
+        <p>New drops, exclusive offers, and aesthetic inspo — straight to your inbox.</p>
+      </div>
+      <div class="nl-form">
+        <input type="email" placeholder="your@email.com"/>
+        <button onclick="subscribeNewsletter(this)">Subscribe</button>
+      </div>
+    </section>
+
+  </main>
 
   <!-- FOOTER -->
-  <footer>
+  <footer role="contentinfo">
     <div class="logo-wrap">
       <div class="logo-main">Æsthetic <span style="color:var(--gold);font-style:italic;">Accessories</span></div>
     </div>
@@ -866,11 +1189,69 @@
     <div class="footer-copy">© 2026 Æsthetic Accessories. All rights reserved.</div>
   </footer>
 
-  <!-- TOAST -->
+  <!-- TOAST NOTIFICATION -->
   <div class="toast" id="toast">Added to cart ✦</div>
 
+  <!-- SCROLL TO TOP BUTTON -->
+  <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
+
+  <!-- LOGIN/SIGNUP MODAL -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+      <h2 class="modal-title" id="modalTitle">Welcome Back</h2>
+      <p class="modal-subtitle" id="modalSubtitle">Sign in to continue</p>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" placeholder="your@email.com" required/>
+          <span class="error-msg" id="loginEmailError">Please enter a valid email</span>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter your password" required/>
+          <span class="error-msg" id="loginPasswordError">Password must be at least 6 characters</span>
+        </div>
+        <button type="submit" class="modal-submit">Sign In</button>
+      </form>
+
+      <!-- SIGNUP FORM (hidden by default) -->
+      <form id="signupForm" style="display: none;">
+        <div class="form-group">
+          <label for="signupName">Name</label>
+          <input type="text" id="signupName" placeholder="Your name" required/>
+          <span class="error-msg" id="signupNameError">Please enter your name</span>
+        </div>
+        <div class="form-group">
+          <label for="signupEmail">Email</label>
+          <input type="email" id="signupEmail" placeholder="your@email.com" required/>
+          <span class="error-msg" id="signupEmailError">Please enter a valid email</span>
+        </div>
+        <div class="form-group">
+          <label for="signupPassword">Password</label>
+          <input type="password" id="signupPassword" placeholder="Create a password (min 6 characters)" required/>
+          <span class="error-msg" id="signupPasswordError">Password must be at least 6 characters</span>
+        </div>
+        <button type="submit" class="modal-submit">Create Account</button>
+      </form>
+
+      <div class="modal-switch">
+        <span id="switchText">Don't have an account?</span>
+        <a href="#" onclick="toggleAuthMode(); return false;" id="switchLink">Sign Up</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT -->
   <script>
-    /* ── CURSOR ── */
+    /* ============================================
+       JAVASCRIPT - Organized by functionality
+       Edit the products array to add your products
+       ============================================ */
+
+    /* ========== CUSTOM CURSOR ========== */
     const cursor = document.getElementById('cursor');
     const ring   = document.getElementById('cursorRing');
     document.addEventListener('mousemove', e => {
@@ -882,7 +1263,238 @@
       }, 60);
     });
 
-    /* ── PRODUCTS DATA ── */
+    /* ========== AUTH MODAL ========== */
+    const authModal = document.getElementById('authModal');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSubtitle = document.getElementById('modalSubtitle');
+    const switchText = document.getElementById('switchText');
+    const switchLink = document.getElementById('switchLink');
+    let isLoginMode = true;
+
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        // Logout
+        localStorage.removeItem('user');
+        document.getElementById('loginBtn').textContent = 'Login';
+        document.getElementById('userProfile').style.display = 'none';
+        toast.textContent = 'Logged out successfully ✦';
+        showToast();
+      } else {
+        openAuthModal();
+      }
+    });
+
+    function openAuthModal() {
+      authModal.classList.add('active');
+    }
+
+    function closeAuthModal() {
+      authModal.classList.remove('active');
+    }
+
+    authModal.addEventListener('click', (e) => {
+      if (e.target === authModal) closeAuthModal();
+    });
+
+    function toggleAuthMode() {
+      isLoginMode = !isLoginMode;
+      if (isLoginMode) {
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+        modalTitle.textContent = 'Welcome Back';
+        modalSubtitle.textContent = 'Sign in to continue';
+        switchText.textContent = "Don't have an account?";
+        switchLink.textContent = 'Sign Up';
+      } else {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+        modalTitle.textContent = 'Create Account';
+        modalSubtitle.textContent = 'Join our aesthetic community';
+        switchText.textContent = 'Already have an account?';
+        switchLink.textContent = 'Sign In';
+      }
+      // Clear errors
+      document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('visible'));
+      document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
+    }
+
+    // Login form submission
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+
+      let valid = true;
+      if (!isValidEmail(email)) {
+        showError('loginEmail', 'loginEmailError');
+        valid = false;
+      }
+      if (password.length < 6) {
+        showError('loginPassword', 'loginPasswordError');
+        valid = false;
+      }
+
+      if (valid) {
+        // Check against stored users
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const user = users.find(u => u.email === email && u.password === password);
+
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user));
+          updateUserDisplay(user);
+          closeAuthModal();
+          toast.textContent = `Welcome back, ${user.name} ✦`;
+          showToast();
+          loginForm.reset();
+        } else {
+          toast.textContent = 'Invalid email or password ✦';
+          showToast();
+        }
+      }
+    });
+
+    // Signup form submission
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('signupName').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+
+      let valid = true;
+      if (!name.trim()) {
+        showError('signupName', 'signupNameError');
+        valid = false;
+      }
+      if (!isValidEmail(email)) {
+        showError('signupEmail', 'signupEmailError');
+        valid = false;
+      }
+      if (password.length < 6) {
+        showError('signupPassword', 'signupPasswordError');
+        valid = false;
+      }
+
+      if (valid) {
+        // Check if email already exists
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        if (users.find(u => u.email === email)) {
+          toast.textContent = 'Email already registered ✦';
+          showToast();
+          return;
+        }
+
+        const newUser = { name, email, password, avatar: name.charAt(0).toUpperCase() };
+        users.push(newUser);
+        localStorage.setItem('users', JSON.stringify(users));
+        localStorage.setItem('user', JSON.stringify(newUser));
+
+        updateUserDisplay(newUser);
+        closeAuthModal();
+        toast.textContent = `Welcome, ${name}! ✦`;
+        showToast();
+        signupForm.reset();
+      }
+    });
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function showError(inputId, errorId) {
+      document.getElementById(inputId).classList.add('error');
+      document.getElementById(errorId).classList.add('visible');
+    }
+
+    function updateUserDisplay(user) {
+      document.getElementById('loginBtn').style.display = 'none';
+      document.getElementById('userProfile').style.display = 'flex';
+      document.getElementById('userName').textContent = user.name;
+      document.getElementById('userAvatar').textContent = user.avatar;
+    }
+
+    // Check if user is logged in on page load
+    const savedUser = JSON.parse(localStorage.getItem('user'));
+    if (savedUser) {
+      updateUserDisplay(savedUser);
+    }
+
+    /* ========== CART PERSISTENCE ========== */
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartCountEl = document.getElementById('cartCount');
+    const cartIcon = document.getElementById('cartIcon');
+
+    function updateCartCount() {
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCountEl.textContent = count;
+      cartCountEl.classList.toggle('visible', count > 0);
+    }
+
+    function addToCart(name) {
+      const existing = cart.find(item => item.name === name);
+      if (existing) {
+        existing.quantity++;
+      } else {
+        cart.push({ name, quantity: 1 });
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      toast.textContent = `"${name}" added ✦`;
+      showToast();
+    }
+
+    cartIcon.addEventListener('click', () => {
+      if (cart.length) {
+        const items = cart.map(i => `${i.name} × ${i.quantity}`).join('\n');
+        alert(`🛒 Your Cart:\n\n${items}`);
+      } else {
+        toast.textContent = 'Your cart is empty ✦';
+        showToast();
+      }
+    });
+
+    cartIcon.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        cartIcon.click();
+      }
+    });
+
+    /* ========== SCROLL TO TOP ========== */
+    const scrollTopBtn = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
+    });
+    scrollTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    scrollTopBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        scrollTopBtn.click();
+      }
+    });
+
+    /* ========== TOAST NOTIFICATION ========== */
+    const toast = document.getElementById('toast');
+    let toastTimer;
+
+    function showToast() {
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+
+    /* ========== PRODUCTS DATA - EDIT THIS SECTION ==========
+       To add products with images:
+       - Add 'image: "https://example.com/image.jpg"' instead of 'emoji'
+       - Keep the 'bg' for background color if image fails to load
+
+       Example:
+       { name:'Gold Ring', category:'rings', price:299, image:'https://...', bg:'#f5eddf', pill:'new', desc:'Description' }
+       ========================================================== */
     const products = [
       { name:'Pearl Drop Earrings',   category:'earrings',  price:349,  oldPrice:499, emoji:'🫧', bg:'#f0e8f0', pill:'sale', desc:'Handcrafted shell pearls with gold-filled hooks' },
       { name:'Dainty Gold Ring',      category:'rings',     price:299,  emoji:'💍',   bg:'#f5eddf', pill:'new',  desc:'Minimalist band with a 14K gold finish' },
@@ -894,10 +1506,20 @@
       { name:'Crystal Hair Pins',     category:'hair',      price:149,  oldPrice:199, emoji:'✨',  bg:'#f5edf5', pill:'sale', desc:'Set of 4 crystal-tipped bobby pins' },
     ];
 
+    let currentFilter = 'all';
+
     function renderProducts(filter = 'all') {
       const grid = document.getElementById('productGrid');
       grid.innerHTML = '';
-      const list = filter === 'all' ? products : products.filter(p => p.category === filter);
+      let list = filter === 'all' ? products : products.filter(p => p.category === filter);
+
+      // Apply sorting
+      const sortValue = document.getElementById('sortSelect').value;
+      if (sortValue === 'price-low') {
+        list = [...list].sort((a, b) => a.price - b.price);
+      } else if (sortValue === 'price-high') {
+        list = [...list].sort((a, b) => b.price - a.price);
+      }
 
       if (!list.length) {
         grid.style.border = 'none';
@@ -912,15 +1534,23 @@
         const pillHtml = p.pill ? `<div class="pill ${pillMap[p.pill]}">${pillLabel[p.pill]}</div>` : '';
         const oldHtml  = p.oldPrice ? `<span class="price-old">₹${p.oldPrice}</span>` : '';
 
+        // Check if product has image or emoji
+        const imageHtml = p.image
+          ? `<img src="${p.image}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/>
+             <div class="emoji-wrap" style="display:none;">${p.emoji || '📦'}</div>`
+          : `<div class="emoji-wrap">${p.emoji}</div>`;
+
         const card = document.createElement('div');
         card.className = 'product-card';
         card.style.animationDelay = `${0.05 + i * 0.07}s`;
+        card.setAttribute('role', 'article');
+        card.setAttribute('aria-label', p.name);
         card.innerHTML = `
-          <div class="product-img" style="background:${p.bg}">
-            <div class="emoji-wrap">${p.emoji}</div>
+          <div class="product-img" style="background:${p.bg}" aria-hidden="true">
+            ${imageHtml}
             ${pillHtml}
             <div class="overlay">
-              <button class="overlay-btn" onclick="addToCart('${p.name}')">Add to Cart</button>
+              <button class="overlay-btn" onclick="addToCart('${p.name}')" aria-label="Add ${p.name} to cart">Add to Cart</button>
             </div>
           </div>
           <div class="product-info">
@@ -932,7 +1562,7 @@
                 <span class="price-now">₹${p.price}</span>
                 ${oldHtml}
               </div>
-              <button class="wishlist-btn" onclick="toggleWish(this)" title="Wishlist">♡</button>
+              <button class="wishlist-btn" onclick="toggleWish(this)" title="Wishlist" aria-label="Add ${p.name} to wishlist">♡</button>
             </div>
           </div>`;
         grid.appendChild(card);
@@ -942,7 +1572,12 @@
     function filterCards(cat, btn) {
       document.querySelectorAll('.filt').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      currentFilter = cat;
       renderProducts(cat);
+    }
+
+    function sortProducts() {
+      renderProducts(currentFilter);
     }
 
     function toggleWish(btn) {
@@ -950,26 +1585,36 @@
       btn.textContent = btn.classList.contains('active') ? '♥' : '♡';
     }
 
-    const toast = document.getElementById('toast');
-    let toastTimer;
-    function addToCart(name) {
-      toast.textContent = `"${name}" added ✦`;
-      toast.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
-    }
-
+    /* ========== NEWSLETTER SUBSCRIPTION ========== */
     function subscribeNewsletter(btn) {
       const input = btn.previousElementSibling;
-      if (!input.value.includes('@')) { input.style.borderColor = 'var(--wine)'; return; }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(input.value)) {
+        input.style.borderColor = 'var(--wine)';
+        input.setAttribute('aria-invalid', 'true');
+        toast.textContent = 'Please enter a valid email ✦';
+        showToast();
+        return;
+      }
+
+      input.style.borderColor = '';
+      input.removeAttribute('aria-invalid');
       btn.textContent = 'Subscribed ✦';
       btn.style.background = 'var(--deep)';
       btn.style.color = 'var(--gold-lt)';
       input.value = '';
-      input.style.borderColor = '';
+
+      setTimeout(() => {
+        btn.textContent = 'Subscribe';
+        btn.style.background = 'var(--gold)';
+        btn.style.color = 'var(--deep)';
+      }, 3000);
     }
 
+    /* ========== INITIALIZE ========== */
     renderProducts();
+    updateCartCount();
   </script>
 </body>
 </html>
