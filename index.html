@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Æsthetic Accessories</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blush:   #f7ede8;
+      --rose:    #e8c4b8;
+      --deep:    #2b1f1a;
+      --wine:    #7a3f3f;
+      --sand:    #f2e8de;
+      --gold:    #c9975a;
+      --gold-lt: #e0bb8a;
+      --muted:   #9b7a6e;
+      --white:   #fdfaf8;
+      --border:  rgba(43,31,26,0.1);
+    }
+
+    ::selection { background: var(--rose); color: var(--deep); }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--white);
+      color: var(--deep);
+      cursor: none;
+    }
+
+    /* ── CUSTOM CURSOR ── */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, width 0.25s, height 0.25s, background 0.25s;
+      mix-blend-mode: multiply;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, width 0.3s, height 0.3s, border-color 0.3s;
+    }
+    body:has(a:hover) .cursor, body:has(button:hover) .cursor { width: 18px; height: 18px; }
+    body:has(a:hover) .cursor-ring, body:has(button:hover) .cursor-ring { width: 56px; height: 56px; border-color: var(--wine); }
+
+    /* ── GRAIN OVERLAY ── */
+    body::after {
+      content:'';
+      position:fixed;
+      inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events:none;
+      z-index:1000;
+    }
+
+    /* ── MARQUEE STRIP ── */
+    .marquee-strip {
+      background: var(--deep);
+      color: var(--gold-lt);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 0.6rem 0;
+    }
+    .marquee-inner {
+      display: inline-block;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-inner span { margin: 0 2.5rem; }
+    .marquee-inner .dot { color: var(--gold); }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.6rem 5vw;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(253,250,248,0.95);
+      backdrop-filter: blur(12px);
+      z-index: 200;
+    }
+
+    .logo-wrap { display: flex; flex-direction: column; gap: 0; line-height: 1; }
+    .logo-main {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--deep);
+    }
+    .logo-main span { color: var(--gold); font-style: italic; }
+    .logo-sub {
+      font-size: 0.58rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 300;
+      margin-top: 2px;
+    }
+
+    nav {
+      display: flex;
+      gap: 2.2rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+    nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    nav a:hover { color: var(--gold); }
+
+    .header-cta {
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.4rem;
+      border: 1px solid var(--deep);
+      color: var(--deep);
+      background: transparent;
+      cursor: none;
+      transition: all 0.25s;
+      font-family: 'Jost', sans-serif;
+      font-weight: 400;
+    }
+    .header-cta:hover { background: var(--deep); color: var(--gold-lt); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 88vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem 4rem 6rem 5vw;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .hero-eyebrow::before {
+      content:'';
+      display: inline-block;
+      width: 2.5rem;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 5.5vw, 5.2rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.8rem;
+    }
+    .hero-title em { font-style: italic; color: var(--wine); }
+
+    .hero-body {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      max-width: 28rem;
+      font-weight: 300;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-btns { display: flex; gap: 1rem; align-items: center; }
+
+    .btn-primary {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.9rem 2.2rem;
+      background: var(--deep);
+      color: var(--gold-lt);
+      border: none;
+      cursor: none;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--wine); transform: translateY(-2px); }
+
+    .btn-ghost {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--deep);
+      background: none;
+      border: none;
+      cursor: none;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--deep);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--gold); border-color: var(--gold); }
+
+    .hero-right {
+      position: relative;
+      background: var(--blush);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 40%, rgba(201,151,90,0.18) 0%, transparent 65%);
+    }
+
+    .hero-blob {
+      width: 60%;
+      aspect-ratio: 1;
+      border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+      background: linear-gradient(135deg, var(--rose), var(--sand));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7rem;
+      animation: morph 8s ease-in-out infinite, float 6s ease-in-out infinite;
+      box-shadow: 0 30px 80px rgba(122,63,63,0.15);
+    }
+
+    @keyframes morph {
+      0%,100% { border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%; }
+      33%      { border-radius: 40% 60% 30% 70% / 60% 40% 60% 40%; }
+      66%      { border-radius: 70% 30% 50% 50% / 30% 70% 50% 50%; }
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-18px); }
+    }
+
+    .hero-tag {
+      position: absolute;
+      bottom: 3rem;
+      right: 3rem;
+      background: var(--deep);
+      color: var(--gold-lt);
+      padding: 1rem 1.4rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      line-height: 1.8;
+    }
+    .hero-tag strong {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+      color: white;
+    }
+
+    /* ── SECTION INTRO ── */
+    .section-intro {
+      text-align: center;
+      padding: 5rem 5vw 3rem;
+    }
+    .section-intro .eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .section-intro h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .section-intro h2 em { font-style: italic; color: var(--wine); }
+    .section-intro p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      max-width: 36rem;
+      margin: 0 auto;
+      line-height: 1.9;
+      font-weight: 300;
+    }
+
+    /* ── FILTER ── */
+    .filter-row {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      padding: 1.5rem 5vw 2.5rem;
+      flex-wrap: wrap;
+    }
+    .filt {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.45rem 1.2rem;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: none;
+      transition: all 0.22s;
+    }
+    .filt:hover, .filt.active {
+      background: var(--deep);
+      color: var(--gold-lt);
+      border-color: var(--deep);
+    }
+
+    /* ── PRODUCT GRID ── */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+      margin: 0 5vw 5rem;
+    }
+
+    .product-card {
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      animation: cardIn 0.55s ease both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .product-card:nth-child(1) { animation-delay: 0.05s; }
+    .product-card:nth-child(2) { animation-delay: 0.1s; }
+    .product-card:nth-child(3) { animation-delay: 0.15s; }
+    .product-card:nth-child(4) { animation-delay: 0.2s; }
+    .product-card:nth-child(5) { animation-delay: 0.25s; }
+    .product-card:nth-child(6) { animation-delay: 0.3s; }
+    .product-card:nth-child(7) { animation-delay: 0.35s; }
+    .product-card:nth-child(8) { animation-delay: 0.4s; }
+
+    .product-img {
+      aspect-ratio: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4.5rem;
+      transition: background 0.4s;
+    }
+
+    .product-img .emoji-wrap {
+      transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .product-card:hover .emoji-wrap { transform: scale(1.12) rotate(-4deg); }
+
+    .product-img .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(43,31,26,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .product-card:hover .overlay { opacity: 1; }
+    .overlay-btn {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.7rem 1.5rem;
+      background: var(--gold);
+      color: var(--deep);
+      border: none;
+      cursor: none;
+      transform: translateY(8px);
+      transition: transform 0.3s;
+      font-weight: 500;
+    }
+    .product-card:hover .overlay-btn { transform: translateY(0); }
+
+    .pill {
+      position: absolute;
+      top: 0.9rem;
+      left: 0.9rem;
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.28rem 0.7rem;
+      font-weight: 500;
+    }
+    .pill-new  { background: var(--deep); color: var(--gold-lt); }
+    .pill-sale { background: var(--wine); color: white; }
+    .pill-fav  { background: var(--rose); color: var(--wine); }
+
+    .product-info {
+      padding: 1.3rem 1.4rem 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .product-cat {
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 400;
+    }
+    .product-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--deep);
+      line-height: 1.25;
+    }
+    .product-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.6;
+      font-weight: 300;
+      margin-bottom: 0.6rem;
+    }
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+    .price-block { display: flex; align-items: baseline; gap: 0.5rem; }
+    .price-now {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      color: var(--deep);
+    }
+    .price-old {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: line-through;
+      font-style: italic;
+    }
+    .wishlist-btn {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      cursor: none;
+      color: var(--muted);
+      transition: color 0.2s, transform 0.2s;
+      padding: 0;
+    }
+    .wishlist-btn:hover, .wishlist-btn.active { color: var(--wine); transform: scale(1.2); }
+
+    /* ── ABOUT STRIP ── */
+    .about-strip {
+      background: var(--blush);
+      padding: 5rem 5vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-text .eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+    .about-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1.25;
+      margin-bottom: 1.4rem;
+    }
+    .about-text h2 em { font-style: italic; color: var(--wine); }
+    .about-text p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.95;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .stat {
+      padding: 1.8rem 1.5rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      color: var(--gold);
+      font-weight: 400;
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .stat-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials {
+      padding: 5rem 5vw;
+      text-align: center;
+    }
+    .testimonials .eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 3rem;
+    }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .testi {
+      padding: 2rem 1.8rem;
+      border: 1px solid var(--border);
+      text-align: left;
+      background: var(--sand);
+    }
+    .stars { color: var(--gold); font-size: 0.8rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
+    .testi-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.98rem;
+      color: var(--deep);
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+    .testi-author {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── NEWSLETTER ── */
+    .newsletter {
+      background: var(--deep);
+      padding: 4.5rem 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .nl-text h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      color: var(--white);
+      font-weight: 400;
+      margin-bottom: 0.4rem;
+    }
+    .nl-text h3 em { color: var(--gold-lt); font-style: italic; }
+    .nl-text p {
+      font-size: 0.82rem;
+      color: rgba(253,250,248,0.5);
+      font-weight: 300;
+    }
+    .nl-form { display: flex; gap: 0; }
+    .nl-form input {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem;
+      padding: 0.9rem 1.4rem;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.06);
+      color: var(--white);
+      width: 20rem;
+      outline: none;
+      letter-spacing: 0.05em;
+    }
+    .nl-form input::placeholder { color: rgba(253,250,248,0.35); }
+    .nl-form button {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.9rem 1.6rem;
+      background: var(--gold);
+      color: var(--deep);
+      border: none;
+      cursor: none;
+      font-weight: 500;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .nl-form button:hover { background: var(--gold-lt); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2.5rem 5vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    footer .logo-main { font-size: 1.1rem; }
+    .footer-links { display: flex; gap: 1.8rem; }
+    .footer-links a {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-copy {
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+    }
+
+    /* ── CART TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(5rem);
+      background: var(--deep);
+      color: var(--gold-lt);
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      z-index: 500;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .products { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-right { height: 50vw; }
+      .hero-left { padding: 3rem 5vw; }
+      nav { display: none; }
+      .about-strip { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .newsletter { flex-direction: column; align-items: flex-start; }
+      .nl-form input { width: 100%; }
+      .nl-form { flex-direction: column; width: 100%; }
+    }
+    @media (max-width: 560px) {
+      .products { grid-template-columns: 1fr; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- MARQUEE -->
+  <div class="marquee-strip">
+    <div class="marquee-inner">
+      <span>New Arrivals Just Dropped</span><span class="dot">✦</span>
+      <span>Free Shipping on Orders Over ₹999</span><span class="dot">✦</span>
+      <span>Handpicked for the Aesthetic Soul</span><span class="dot">✦</span>
+      <span>Exclusive Pieces, Limited Stock</span><span class="dot">✦</span>
+      <span>New Arrivals Just Dropped</span><span class="dot">✦</span>
+      <span>Free Shipping on Orders Over ₹999</span><span class="dot">✦</span>
+      <span>Handpicked for the Aesthetic Soul</span><span class="dot">✦</span>
+      <span>Exclusive Pieces, Limited Stock</span><span class="dot">✦</span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-wrap">
+      <div class="logo-main">Æsthetic <span>Accessories</span></div>
+      <div class="logo-sub">Curated since 2026 · Ongole</div>
+    </div>
+    <nav>
+      <a href="#shop">Shop</a>
+      <a href="#about">About</a>
+      <a href="#love">Reviews</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="header-cta">Shop Now</button>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Spring Collection 2026</div>
+      <h1 class="hero-title">
+        Wear your<br>
+        <em>personality,</em><br>
+        beautifully.
+      </h1>
+      <p class="hero-body">
+        Every piece in our collection is handpicked for the ones who believe accessories aren't an afterthought — they're the whole point.
+      </p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Explore Collection</button>
+        <button class="btn-ghost" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Our Story</button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-blob">💍</div>
+      <div class="hero-tag">
+        <strong>200+</strong>
+        Happy Customers
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOP SECTION -->
+  <section id="shop">
+    <div class="section-intro">
+      <div class="eyebrow">✦ Our Collection ✦</div>
+      <h2>Pieces you'll <em>love forever</em></h2>
+      <p>From delicate rings to statement earrings — every item is chosen with intention, style, and a little obsession.</p>
+    </div>
+
+    <div class="filter-row">
+      <button class="filt active" onclick="filterCards('all',this)">All</button>
+      <button class="filt" onclick="filterCards('rings',this)">Rings</button>
+      <button class="filt" onclick="filterCards('earrings',this)">Earrings</button>
+      <button class="filt" onclick="filterCards('necklaces',this)">Necklaces</button>
+      <button class="filt" onclick="filterCards('bracelets',this)">Bracelets</button>
+      <button class="filt" onclick="filterCards('hair',this)">Hair Accessories</button>
+    </div>
+
+    <div class="products" id="productGrid"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about-strip" id="about">
+    <div class="about-text">
+      <div class="eyebrow">✦ Our Story</div>
+      <h2>Born from a love of <em>beautiful things</em></h2>
+      <p>Æsthetic Accessories started as a personal obsession — scouring markets, finding unique pieces, and sharing them with friends who always asked "where did you get that?"</p>
+      <p>Today, we're a small but passionate team based in Ongole, dedicated to bringing you accessories that feel personal, intentional, and genuinely beautiful. Every piece is selected by hand. No mass production. No compromise.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat"><div class="stat-num">200+</div><div class="stat-label">Happy Customers</div></div>
+      <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Unique Pieces</div></div>
+      <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">Average Rating</div></div>
+      <div class="stat"><div class="stat-num">Est.</div><div class="stat-label">2026</div></div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials" id="love">
+    <div class="eyebrow">✦ What Our Customers Say ✦</div>
+    <div class="testi-grid">
+      <div class="testi">
+        <div class="stars">★★★★★</div>
+        <div class="testi-text">"The pearl earrings I ordered are even more beautiful in person. The packaging was so thoughtful — it felt like a gift to myself."</div>
+        <div class="testi-author">— Ananya R., Ongole</div>
+      </div>
+      <div class="testi">
+        <div class="stars">★★★★★</div>
+        <div class="testi-text">"I've ordered three times and every single piece is perfect. The quality for the price is unbeatable. Truly aesthetic finds!"</div>
+        <div class="testi-author">— Priya S., Bangalore</div>
+      </div>
+      <div class="testi">
+        <div class="stars">★★★★★</div>
+        <div class="testi-text">"The gold layered necklace gets me compliments every single time I wear it. Obsessed doesn't even cover it."</div>
+        <div class="testi-author">— Meera T., Mumbai</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter" id="contact">
+    <div class="nl-text">
+      <h3>Stay in the <em>loop</em></h3>
+      <p>New drops, exclusive offers, and aesthetic inspo — straight to your inbox.</p>
+    </div>
+    <div class="nl-form">
+      <input type="email" placeholder="your@email.com"/>
+      <button onclick="subscribeNewsletter(this)">Subscribe</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo-wrap">
+      <div class="logo-main">Æsthetic <span style="color:var(--gold);font-style:italic;">Accessories</span></div>
+    </div>
+    <div class="footer-links">
+      <a href="#">Instagram</a>
+      <a href="#">WhatsApp</a>
+      <a href="#">Returns</a>
+      <a href="#">Privacy</a>
+    </div>
+    <div class="footer-copy">© 2026 Æsthetic Accessories. All rights reserved.</div>
+  </footer>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">Added to cart ✦</div>
+
+  <script>
+    /* ── CURSOR ── */
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursorRing');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+      setTimeout(() => {
+        ring.style.left = e.clientX + 'px';
+        ring.style.top  = e.clientY + 'px';
+      }, 60);
+    });
+
+    /* ── PRODUCTS DATA ── */
+    const products = [
+      { name:'Pearl Drop Earrings',   category:'earrings',  price:349,  oldPrice:499, emoji:'🫧', bg:'#f0e8f0', pill:'sale', desc:'Handcrafted shell pearls with gold-filled hooks' },
+      { name:'Dainty Gold Ring',      category:'rings',     price:299,  emoji:'💍',   bg:'#f5eddf', pill:'new',  desc:'Minimalist band with a 14K gold finish' },
+      { name:'Layered Sun Necklace',  category:'necklaces', price:449,  emoji:'☀️',   bg:'#fdf0e0', pill:'fav',  desc:'Delicate three-layer chain with celestial charm' },
+      { name:'Claw Hair Clip',        category:'hair',      price:199,  emoji:'🦋',   bg:'#eaf0f5', pill:'new',  desc:'Oversized tort acetate, strong hold' },
+      { name:'Star Stud Set',         category:'earrings',  price:249,  oldPrice:349, emoji:'⭐',  bg:'#f5f0e0', pill:'sale', desc:'Set of 3 star studs in silver & gold' },
+      { name:'Beaded Bracelet',       category:'bracelets', price:179,  emoji:'📿',   bg:'#fae8ea', pill:null,   desc:'Hand-strung semi-precious stone beads' },
+      { name:'Twisted Hoop Earrings', category:'earrings',  price:379,  emoji:'⭕',   bg:'#edf5ed', pill:'new',  desc:'Textured gold-tone twisted hoops, 30mm' },
+      { name:'Crystal Hair Pins',     category:'hair',      price:149,  oldPrice:199, emoji:'✨',  bg:'#f5edf5', pill:'sale', desc:'Set of 4 crystal-tipped bobby pins' },
+    ];
+
+    function renderProducts(filter = 'all') {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+      const list = filter === 'all' ? products : products.filter(p => p.category === filter);
+
+      if (!list.length) {
+        grid.style.border = 'none';
+        grid.innerHTML = `<div style="padding:4rem;text-align:center;font-style:italic;color:var(--muted);font-family:'Playfair Display',serif;font-size:1.1rem;grid-column:1/-1;">Nothing here yet — check back soon!</div>`;
+        return;
+      }
+      grid.style.border = '';
+
+      list.forEach((p, i) => {
+        const pillMap = { new:'pill-new', sale:'pill-sale', fav:'pill-fav' };
+        const pillLabel = { new:'New', sale:'Sale', fav:'♥ Fav' };
+        const pillHtml = p.pill ? `<div class="pill ${pillMap[p.pill]}">${pillLabel[p.pill]}</div>` : '';
+        const oldHtml  = p.oldPrice ? `<span class="price-old">₹${p.oldPrice}</span>` : '';
+
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.style.animationDelay = `${0.05 + i * 0.07}s`;
+        card.innerHTML = `
+          <div class="product-img" style="background:${p.bg}">
+            <div class="emoji-wrap">${p.emoji}</div>
+            ${pillHtml}
+            <div class="overlay">
+              <button class="overlay-btn" onclick="addToCart('${p.name}')">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-cat">${p.category}</div>
+            <div class="product-name">${p.name}</div>
+            <div class="product-desc">${p.desc}</div>
+            <div class="product-footer">
+              <div class="price-block">
+                <span class="price-now">₹${p.price}</span>
+                ${oldHtml}
+              </div>
+              <button class="wishlist-btn" onclick="toggleWish(this)" title="Wishlist">♡</button>
+            </div>
+          </div>`;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterCards(cat, btn) {
+      document.querySelectorAll('.filt').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderProducts(cat);
+    }
+
+    function toggleWish(btn) {
+      btn.classList.toggle('active');
+      btn.textContent = btn.classList.contains('active') ? '♥' : '♡';
+    }
+
+    const toast = document.getElementById('toast');
+    let toastTimer;
+    function addToCart(name) {
+      toast.textContent = `"${name}" added ✦`;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+
+    function subscribeNewsletter(btn) {
+      const input = btn.previousElementSibling;
+      if (!input.value.includes('@')) { input.style.borderColor = 'var(--wine)'; return; }
+      btn.textContent = 'Subscribed ✦';
+      btn.style.background = 'var(--deep)';
+      btn.style.color = 'var(--gold-lt)';
+      input.value = '';
+      input.style.borderColor = '';
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
