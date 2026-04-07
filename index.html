@@ -713,6 +713,218 @@
     .pill-sale { background: var(--wine); color: white; }
     .pill-fav  { background: var(--rose); color: var(--wine); }
 
+    /* Product Preview Modal */
+    .product-preview-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(43,31,26,0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 1rem;
+    }
+    .product-preview-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .product-preview-modal.active .product-preview {
+      transform: scale(1);
+    }
+    .product-preview {
+      background: var(--white);
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 16px;
+      transform: scale(0.9);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 30px 100px rgba(0,0,0,0.3);
+    }
+    .preview-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--white);
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: none;
+      color: var(--deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, background 0.2s;
+      z-index: 10;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    .preview-close:hover { transform: scale(1.1); background: var(--blush); }
+    .preview-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .preview-image {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 16px 0 0 16px;
+    }
+    .preview-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .preview-image .emoji-wrap {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8rem;
+    }
+    .preview-details {
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .preview-cat {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+    }
+    .preview-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--deep);
+      line-height: 1.2;
+    }
+    .preview-desc {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+      flex: 1;
+    }
+    .preview-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--deep);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .preview-old-price {
+      font-size: 1rem;
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+    .preview-discount {
+      font-size: 0.85rem;
+      color: var(--wine);
+      background: var(--blush);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+    }
+    .preview-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .preview-colors {
+      margin-bottom: 0.5rem;
+    }
+    .preview-colors-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .preview-colors-label strong {
+      color: var(--deep);
+    }
+    .preview-color-options {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .preview-color-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: none;
+      transition: all 0.2s;
+      padding: 0;
+    }
+    .preview-color-btn:hover {
+      transform: scale(1.1);
+      border-color: var(--gold);
+    }
+    .preview-color-btn.active {
+      border-color: var(--deep);
+      box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--deep);
+    }
+    .preview-add-btn {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+      color: var(--deep);
+      border: none;
+      border-radius: 10px;
+      font-family: 'Jost', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .preview-add-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(201, 151, 90, 0.4);
+    }
+    .preview-wish-btn {
+      width: 56px;
+      height: 56px;
+      border: 2px solid var(--border);
+      background: var(--white);
+      border-radius: 10px;
+      font-size: 1.4rem;
+      cursor: none;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .preview-wish-btn:hover {
+      border-color: var(--wine);
+      color: var(--wine);
+      transform: scale(1.05);
+    }
+    .preview-wish-btn.active {
+      background: var(--rose);
+      border-color: var(--rose);
+      color: var(--wine);
+    }
+    .preview-pill {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
     .product-info {
       padding: 1.3rem 1.4rem 1.5rem;
       flex: 1;
@@ -770,6 +982,43 @@
     }
     .wishlist-btn:hover, .wishlist-btn.active { color: var(--wine); transform: scale(1.2); }
     .wishlist-btn:focus { outline: 2px solid var(--wine); outline-offset: 2px; }
+
+    /* Color Swatches */
+    .color-swatches {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .color-swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: none;
+      transition: all 0.2s;
+      padding: 0;
+      position: relative;
+    }
+    .color-swatch:hover {
+      transform: scale(1.15);
+      border-color: var(--gold);
+    }
+    .color-swatch.active {
+      border-color: var(--deep);
+      box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--deep);
+    }
+    .color-swatch.active::after {
+      content: '✓';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      color: var(--white);
+      text-shadow: 0 0 2px rgba(0,0,0,0.5);
+    }
 
     /* ========== ABOUT SECTION ========== */
     .about-strip {
@@ -1715,6 +1964,21 @@
       .filter-row { padding: 1rem 5vw 1.5rem; gap: 0.4rem; }
       .filt { font-size: 0.55rem; padding: 0.4rem 0.9rem; }
       .sort-wrapper { margin-left: 0; width: 100%; justify-content: center; }
+
+      /* Product Preview Modal */
+      .product-preview-modal { padding: 0.5rem; z-index: 2000; }
+      .product-preview { border-radius: 12px; max-height: 95vh; }
+      .preview-close { width: 36px; height: 36px; font-size: 1.2rem; top: 0.5rem; right: 0.5rem; }
+      .preview-content { grid-template-columns: 1fr; }
+      .preview-image { border-radius: 12px 12px 0 0; max-height: 50vh; }
+      .preview-image .emoji-wrap { font-size: 5rem; }
+      .preview-details { padding: 1.5rem; gap: 0.8rem; }
+      .preview-name { font-size: 1.5rem; }
+      .preview-desc { font-size: 0.9rem; }
+      .preview-price { font-size: 1.4rem; }
+      .preview-actions { flex-direction: row; gap: 0.75rem; }
+      .preview-add-btn { padding: 0.85rem 1rem; font-size: 0.85rem; }
+      .preview-wish-btn { width: 48px; height: 48px; font-size: 1.2rem; }
     }
 
     /* Small Mobile - Premium Feel */
@@ -1746,6 +2010,8 @@
       .price-old { font-size: 0.6rem; }
       .wishlist-btn { font-size: 1.1rem; padding: 0.2rem; }
       .pill { font-size: 0.48rem; padding: 0.22rem 0.5rem; border-radius: 4px; }
+      .color-swatches { gap: 0.3rem; margin-bottom: 0.4rem; }
+      .color-swatch { width: 18px; height: 18px; }
 
       /* Hero */
       .hero-title { font-size: 1.8rem; }
@@ -2110,6 +2376,14 @@
           </button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT PREVIEW MODAL -->
+  <div class="product-preview-modal" id="productPreviewModal">
+    <button class="preview-close" onclick="closeProductPreview()">&times;</button>
+    <div class="product-preview" id="productPreviewContent">
+      <!-- Content will be injected by JavaScript -->
     </div>
   </div>
 
@@ -2855,12 +3129,50 @@
       }
     }
 
+    // Selected colors for each product (stores index of selected color)
+    let selectedColors = {};
+
+    function selectColor(swatch, productName, colorIndex) {
+      const product = products.find(p => p.name === productName);
+      if (!product) return;
+
+      const color = product.colors[colorIndex];
+      if (!color) return;
+
+      // Update selected colors
+      selectedColors[productName] = colorIndex;
+
+      // Update swatch active state
+      const swatches = swatch.parentElement.querySelectorAll('.color-swatch');
+      swatches.forEach((s, i) => {
+        s.classList.toggle('active', i === colorIndex);
+      });
+
+      // Update card image and background
+      const cardBg = document.getElementById(`card-bg-${productName.replace(/\s+/g, '-')}`);
+      if (cardBg) {
+        cardBg.style.background = color.bg;
+        const img = cardBg.querySelector('img');
+        if (img) {
+          img.src = color.image;
+          img.onerror = function() {
+            this.style.display = 'none';
+            this.nextElementSibling.style.display = 'flex';
+          };
+        }
+      }
+    }
+
     function addToCart(name) {
-      const existing = cart.find(item => item.name === name);
+      const product = products.find(p => p.name === name);
+      const colorIndex = selectedColors[name] || 0;
+      const selectedColor = product?.colors[colorIndex]?.name || product?.colors[0]?.name || '';
+
+      const existing = cart.find(item => item.name === name && item.color === selectedColor);
       if (existing) {
         existing.quantity++;
       } else {
-        cart.push({ name, quantity: 1 });
+        cart.push({ name, color: selectedColor, quantity: 1 });
       }
       updateCartCount();
 
@@ -2892,6 +3204,135 @@
       cartModal.classList.remove('active');
     }
 
+    /* ========== PRODUCT PREVIEW ========== */
+    const previewModal = document.getElementById('productPreviewModal');
+    const previewContent = document.getElementById('productPreviewContent');
+
+    function openProductPreview(product) {
+      const pillMap = { new:'pill-new', sale:'pill-sale', fav:'pill-fav' };
+      const pillLabel = { new:'New', sale:'Sale', fav:'♥ Fav' };
+      const pillHtml = product.pill ? `<div class="preview-pill ${pillMap[product.pill]}">${pillLabel[product.pill]}</div>` : '';
+
+      let discountHtml = '';
+      if (product.oldPrice) {
+        const discount = Math.round((1 - product.basePrice / product.oldPrice) * 100);
+        discountHtml = `<span class="preview-discount">${discount}% OFF</span>`;
+      }
+
+      const oldPriceHtml = product.oldPrice ? `<span class="preview-old-price">₹${product.oldPrice}</span>` : '';
+
+      // Use first color or default
+      const defaultColor = product.colors[0];
+      const selectedColorIndex = selectedColors[product.name] || 0;
+      const currentColor = product.colors[selectedColorIndex] || defaultColor;
+
+      const imageHtml = `<img src="${currentColor.image}" alt="${product.name}" id="preview-main-image"/>`;
+
+      // Color options HTML
+      const colorOptionsHtml = product.colors.length > 1 ? `
+        <div class="preview-colors">
+          <div class="preview-colors-label">Color: <strong>${currentColor.name}</strong></div>
+          <div class="preview-color-options">
+            ${product.colors.map((c, idx) => `
+              <button class="preview-color-btn ${idx === selectedColorIndex ? 'active' : ''}"
+                      style="background:${c.bg};"
+                      data-index="${idx}"
+                      onclick="selectPreviewColor('${product.name}', ${idx})"
+                      title="${c.name}">
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      ` : '';
+
+      const inWishlist = wishlist.some(w => w.name === product.name);
+      const wishlistClass = inWishlist ? 'active' : '';
+      const wishlistIcon = inWishlist ? '♥' : '♡';
+
+      previewContent.innerHTML = `
+        <div class="preview-content">
+          <div class="preview-image" style="background:${currentColor.bg}" id="preview-image-container">
+            ${pillHtml}
+            ${imageHtml}
+          </div>
+          <div class="preview-details">
+            <div class="preview-cat">${product.category}</div>
+            <h2 class="preview-name">${product.name}</h2>
+            <p class="preview-desc">${product.desc || 'No description available.'}</p>
+            ${colorOptionsHtml}
+            <div class="preview-price">
+              <span id="preview-price">₹${product.basePrice}</span>
+              ${oldPriceHtml}
+              ${discountHtml}
+            </div>
+            <div class="preview-actions">
+              <button class="preview-add-btn" onclick="addToCart('${product.name}'); closeProductPreview();">Add to Cart</button>
+              <button class="preview-wish-btn ${wishlistClass}" onclick="toggleWishPreview(this, '${product.name}')" title="Add to Wishlist">${wishlistIcon}</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      previewModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function selectPreviewColor(productName, colorIndex) {
+      const product = products.find(p => p.name === productName);
+      if (!product || !product.colors[colorIndex]) return;
+
+      const color = product.colors[colorIndex];
+      selectedColors[productName] = colorIndex;
+
+      // Update preview image and background
+      const imageContainer = document.getElementById('preview-image-container');
+      if (imageContainer) {
+        imageContainer.style.background = color.bg;
+        const img = document.getElementById('preview-main-image');
+        if (img) img.src = color.image;
+      }
+
+      // Update color button states
+      document.querySelectorAll('.preview-color-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', idx === colorIndex);
+      });
+
+      // Update color label
+      const label = document.querySelector('.preview-colors-label strong');
+      if (label) label.textContent = color.name;
+    }
+
+    function closeProductPreview() {
+      previewModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    previewModal.addEventListener('click', (e) => {
+      if (e.target === previewModal) closeProductPreview();
+    });
+
+    function toggleWishPreview(btn, name) {
+      const index = wishlist.findIndex(w => w.name === name);
+      if (index > -1) {
+        wishlist.splice(index, 1);
+        btn.classList.remove('active');
+        btn.textContent = '♡';
+      } else {
+        wishlist.push({ name, addedAt: Date.now() });
+        btn.classList.add('active');
+        btn.textContent = '♥';
+      }
+      saveWishlistToSupabase();
+      updateWishlistUI();
+    }
+
+    // Close preview on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && previewModal.classList.contains('active')) {
+        closeProductPreview();
+      }
+    });
+
     cartModal.addEventListener('click', (e) => {
       if (e.target === cartModal) closeCartModal();
     });
@@ -2908,28 +3349,43 @@
 
       cart.forEach((item, idx) => {
         const product = products.find(p => p.name === item.name);
-        const price = product ? product.price : 0;
+        const price = product ? product.basePrice : 0;
         const itemTotal = price * item.quantity;
         total += itemTotal;
 
-        // Get product image or emoji
-        const imageHtml = product?.image
-          ? `<img src="${product.image}" alt="${item.name}" style="width:60px;height:60px;object-fit:cover;border-radius:4px;"/>`
-          : `<div style="width:60px;height:60px;background:var(--card-bg);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">${product?.emoji || '📦'}</div>`;
+        // Get product color image
+        let itemImage = '';
+        let itemBg = 'var(--card-bg)';
+        if (product) {
+          const colorIndex = product.colors.findIndex(c => c.name === item.color);
+          const color = product.colors[colorIndex >= 0 ? colorIndex : 0];
+          if (color) {
+            itemImage = `<img src="${color.image}" alt="${item.name}" style="width:60px;height:60px;object-fit:cover;border-radius:4px;"/>`;
+            itemBg = color.bg;
+          }
+        }
+        if (!itemImage) {
+          itemImage = `<div style="width:60px;height:60px;background:${itemBg};border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">📦</div>`;
+        }
+
+        const colorLabel = item.color ? `<div style="font-size:0.75rem;color:var(--muted);margin-top:0.2rem;">${item.color}</div>` : '';
 
         html += `
           <div class="cart-item" style="animation:slideInLeft 0.3s ease ${idx * 0.05}s both;">
             <div style="display:flex;align-items:center;gap:1rem;flex:1;">
-              ${imageHtml}
+              <div style="width:60px;height:60px;background:${itemBg};border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                ${itemImage}
+              </div>
               <div class="cart-item-info">
                 <div class="cart-item-name">${item.name}</div>
                 <div class="cart-item-price"><span class="rupee">&#8377;</span>${price}</div>
+                ${colorLabel}
               </div>
             </div>
             <div class="cart-item-quantity">
-              <button class="qty-btn" onclick="updateCartQuantity('${item.name}', -1)">−</button>
+              <button class="qty-btn" onclick="updateCartQuantity('${item.name}', '${item.color || ''}', -1)">−</button>
               <span class="qty-value">${item.quantity}</span>
-              <button class="qty-btn" onclick="updateCartQuantity('${item.name}', 1)">+</button>
+              <button class="qty-btn" onclick="updateCartQuantity('${item.name}', '${item.color || ''}', 1)">+</button>
             </div>
             <div class="cart-item-total"><span class="rupee">&#8377;</span>${itemTotal}</div>
           </div>
@@ -2940,8 +3396,8 @@
       cartTotalEl.innerHTML = `<span class="rupee">&#8377;</span>${total}`;
     }
 
-    function updateCartQuantity(name, change) {
-      const item = cart.find(i => i.name === name);
+    function updateCartQuantity(name, color, change) {
+      const item = cart.find(i => i.name === name && (i.color || '') === (color || ''));
       if (item) {
         item.quantity += change;
         if (item.quantity <= 0) {
@@ -3075,10 +3531,16 @@
 
       cart.forEach(item => {
         const product = products.find(p => p.name === item.name);
-        const price = product ? product.price : 0;
+        const price = product ? product.basePrice : 0;
         const itemTotal = price * item.quantity;
-        message += `\n• ${item.name} x${item.quantity} - ₹${itemTotal}\n`;
-        if (product?.image) message += `🖼️ Image: ${product.image}\n`;
+        const colorInfo = item.color ? ` (${item.color})` : '';
+        message += `\n• ${item.name}${colorInfo} x${item.quantity} - ₹${itemTotal}\n`;
+        // Get color-specific image
+        if (product) {
+          const colorIndex = product.colors.findIndex(c => c.name === item.color);
+          const color = product.colors[colorIndex >= 0 ? colorIndex : 0];
+          if (color?.image) message += `🖼️ Image: ${color.image}\n`;
+        }
       });
 
       message += `\n💰 *Total Amount: ₹${total}*`;
@@ -3375,14 +3837,96 @@
        4. Use format: https://drive.google.com/uc?export=view&id=FILE_ID
        ============================================ */
     const products = [
-      { name:'Purple Crocket',   category:'earrings',  price:200,  oldPrice:300, image:'https://i.ibb.co/gZyhsbXy/rose.jpg', bg:'var(--card-bg)', pill:'sale',},
-      { name:'Dainty Gold Ring',      category:'rings',     price:299,  image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',   bg:'var(--card-bg)', pill:'new',},
-      { name:'Layered Sun Necklace',  category:'necklaces', price:449,  image:'https://i.ibb.co/rGJsM7Ng/Braclet-1.jpg',   bg:'var(--card-bg)', pill:'fav',},
-      { name:'Claw Hair Clip',        category:'hair',      price:199,  image:'https://i.ibb.co/JF88G8g6/keychain-1.jpg',   bg:'var(--card-bg)', pill:'new',},
-      { name:'Star Stud Set',         category:'earrings',  price:249,  oldPrice:349, image:'https://i.ibb.co/ymDLSVSv/keychain-5.jpg',  bg:'var(--card-bg)',},
-      { name:'Beaded Bracelet',       category:'bracelets', price:179,  image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',   bg:'var(--card-bg)', pill:null,},
-      { name:'Twisted Hoop Earrings', category:'earrings',  price:379,  image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',   bg:'var(--card-bg)', pill:'new',},
-      { name:'Crystal Hair Pins',     category:'hair',      price:149,  oldPrice:199, image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',  bg:'var(--card-bg)',},
+      {
+        name:'Purple Crocket',
+        category:'earrings',
+        basePrice:200,
+        oldPrice:300,
+        colors:[
+          {name:'Purple', image:'https://i.ibb.co/gZyhsbXy/rose.jpg', bg:'#e8d8e8'},
+          {name:'Gold', image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg', bg:'#f5eddf'},
+          {name:'Rose', image:'https://i.ibb.co/gZyhsbXy/rose.jpg', bg:'#f0e0e8'},
+        ],
+        pill:'sale',
+        desc:'Beautiful handcrafted crocket with intricate detailing'
+      },
+      {
+        name:'Dainty Gold Ring',
+        category:'rings',
+        basePrice:299,
+        colors:[
+          {name:'Gold', image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg', bg:'#f5eddf'},
+          {name:'Silver', image:'https://i.ibb.co/ymDLSVSv/keychain-5.jpg', bg:'#e8e8e8'},
+        ],
+        pill:'new',
+        desc:'Delicate gold ring perfect for everyday wear'
+      },
+      {
+        name:'Layered Sun Necklace',
+        category:'necklaces',
+        basePrice:449,
+        colors:[
+          {name:'Gold', image:'https://i.ibb.co/rGJsM7Ng/Braclet-1.jpg', bg:'#fdf0e0'},
+          {name:'Silver', image:'https://i.ibb.co/ymDLSVSv/keychain-5.jpg', bg:'#e8e8e8'},
+        ],
+        pill:'fav',
+        desc:'Elegant layered necklace with sun pendant'
+      },
+      {
+        name:'Claw Hair Clip',
+        category:'hair',
+        basePrice:199,
+        colors:[
+          {name:'Black', image:'https://i.ibb.co/JF88G8g6/keychain-1.jpg', bg:'#1a1a1a'},
+          {name:'Tortoise', image:'https://i.ibb.co/JF88G8g6/keychain-1.jpg', bg:'#8b4513'},
+          {name:'Gold', image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg', bg:'#f5eddf'},
+        ],
+        pill:'new',
+        desc:'Trendy claw clip for stylish hair looks'
+      },
+      {
+        name:'Star Stud Set',
+        category:'earrings',
+        basePrice:249,
+        oldPrice:349,
+        colors:[
+          {name:'Gold', image:'https://i.ibb.co/ymDLSVSv/keychain-5.jpg', bg:'#f5eddf'},
+          {name:'Silver', image:'https://i.ibb.co/ymDLSVSv/keychain-5.jpg', bg:'#e8e8e8'},
+        ],
+        desc:'Sparkling star stud earrings set'
+      },
+      {
+        name:'Beaded Bracelet',
+        category:'bracelets',
+        basePrice:179,
+        colors:[
+          {name:'Multi', image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg', bg:'#fae8ea'},
+          {name:'Earth', image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg', bg:'#f0e8d8'},
+        ],
+        desc:'Colorful beaded bracelet for summer vibes'
+      },
+      {
+        name:'Twisted Hoop Earrings',
+        category:'earrings',
+        basePrice:379,
+        colors:[
+          {name:'Gold', image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg', bg:'#f5eddf'},
+          {name:'Silver', image:'https://i.ibb.co/ymDLSVSv/keychain-5.jpg', bg:'#e8e8e8'},
+        ],
+        pill:'new',
+        desc:'Modern twisted hoop earrings'
+      },
+      {
+        name:'Crystal Hair Pins',
+        category:'hair',
+        basePrice:149,
+        oldPrice:199,
+        colors:[
+          {name:'Silver', image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg', bg:'#f5edf5'},
+          {name:'Gold', image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg', bg:'#fdf5e0'},
+        ],
+        desc:'Shimmering crystal pins for elegant updos'
+      },
     ];
 
     let currentFilter = 'all';
@@ -3395,9 +3939,9 @@
       // Apply sorting
       const sortValue = document.getElementById('sortSelect').value;
       if (sortValue === 'price-low') {
-        list = [...list].sort((a, b) => a.price - b.price);
+        list = [...list].sort((a, b) => a.basePrice - b.basePrice);
       } else if (sortValue === 'price-high') {
-        list = [...list].sort((a, b) => b.price - a.price);
+        list = [...list].sort((a, b) => b.basePrice - a.basePrice);
       }
 
       if (!list.length) {
@@ -3413,32 +3957,54 @@
         const pillHtml = p.pill ? `<div class="pill ${pillMap[p.pill]}">${pillLabel[p.pill]}</div>` : '';
         const oldHtml  = p.oldPrice ? `<span class="price-old">₹${p.oldPrice}</span>` : '';
 
-        // Check if product has image or emoji
-        const imageHtml = p.image
-          ? `<img src="${p.image}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/>
-             <div class="emoji-wrap" style="display:none;">${p.emoji || '📦'}</div>`
-          : `<div class="emoji-wrap">${p.emoji}</div>`;
+        // Get first color for card display
+        const firstColor = p.colors[0];
+        const imageHtml = `<img src="${firstColor.image}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/>
+             <div class="emoji-wrap" style="display:none;">📦</div>`;
+
+        // Color swatches HTML
+        const colorSwatches = p.colors.length > 1 ? `
+          <div class="color-swatches">
+            ${p.colors.map((c, idx) => `
+              <button class="color-swatch ${idx === 0 ? 'active' : ''}"
+                      style="background:${c.bg};"
+                      data-color="${c.name}"
+                      data-image="${c.image}"
+                      data-bg="${c.bg}"
+                      onclick="event.stopPropagation(); selectColor(this, '${p.name}', ${idx})"
+                      title="${c.name}">
+              </button>
+            `).join('')}
+          </div>
+        ` : '';
 
         const card = document.createElement('div');
         card.className = 'product-card';
         card.style.animationDelay = `${0.05 + i * 0.07}s`;
         card.setAttribute('role', 'article');
         card.setAttribute('aria-label', p.name);
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', (e) => {
+          // Don't open preview if clicking add to cart or wishlist or color swatches
+          if (e.target.closest('.overlay') || e.target.closest('.wishlist-btn') || e.target.closest('.color-swatches')) return;
+          openProductPreview(p);
+        });
         card.innerHTML = `
-          <div class="product-img" style="background:${p.bg}" aria-hidden="true">
+          <div class="product-img" style="background:${firstColor.bg}" aria-hidden="true" id="card-bg-${p.name.replace(/\s+/g, '-')}">
             ${imageHtml}
             ${pillHtml}
             <div class="overlay">
-              <button class="overlay-btn" onclick="addToCart('${p.name}')" aria-label="Add ${p.name} to cart">Add to Cart</button>
+              <button class="overlay-btn" onclick="event.stopPropagation(); addToCart('${p.name}')" aria-label="Add ${p.name} to cart">Add to Cart</button>
             </div>
           </div>
           <div class="product-info">
             <div class="product-cat">${p.category}</div>
             <div class="product-name">${p.name}</div>
-            <div class="product-desc">${p.desc}</div>
+            <div class="product-desc">${p.desc || ''}</div>
+            ${colorSwatches}
             <div class="product-footer">
               <div class="price-block">
-                <span class="price-now">₹${p.price}</span>
+                <span class="price-now" id="card-price-${p.name.replace(/\s+/g, '-')}">₹${p.basePrice}</span>
                 ${oldHtml}
               </div>
               <button class="wishlist-btn" onclick="toggleWish(this)" title="Wishlist" aria-label="Add ${p.name} to wishlist">♡</button>
@@ -3459,9 +4025,38 @@
       renderProducts(currentFilter);
     }
 
-    function toggleWish(btn) {
-      btn.classList.toggle('active');
-      btn.textContent = btn.classList.contains('active') ? '♥' : '♡';
+    /* ========== WISHLIST ========== */
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+    function toggleWish(btn, name) {
+      const productName = name || btn.closest('.product-card')?.querySelector('.product-name')?.textContent;
+      if (!productName) return;
+
+      const index = wishlist.findIndex(w => w.name === productName);
+      if (index > -1) {
+        wishlist.splice(index, 1);
+        btn.classList.remove('active');
+        btn.textContent = '♡';
+      } else {
+        wishlist.push({ name: productName, addedAt: Date.now() });
+        btn.classList.add('active');
+        btn.textContent = '♥';
+      }
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    }
+
+    function updateWishlistUI() {
+      document.querySelectorAll('.wishlist-btn').forEach(btn => {
+        const productName = btn.closest('.product-card')?.querySelector('.product-name')?.textContent;
+        if (productName && wishlist.some(w => w.name === productName)) {
+          btn.classList.add('active');
+          btn.textContent = '♥';
+        }
+      });
+    }
+
+    function saveWishlistToSupabase() {
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
     }
 
     /* ========== NEWSLETTER SUBSCRIPTION ========== */
