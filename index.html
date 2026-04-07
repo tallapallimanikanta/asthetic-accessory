@@ -38,6 +38,7 @@
       --muted:   #9b7a6e;      /* Muted text */
       --white:   #fdfaf8;      /* White background */
       --border:  rgba(43,31,26,0.1);  /* Border color */
+      --card-bg: #f0e8e0;      /* Product card background (fallback for images) */
     }
 
     /* Dark Theme */
@@ -52,6 +53,7 @@
       --muted:   #b8a89e;      /* Lighter muted */
       --white:   #16162a;      /* Dark background */
       --border:  rgba(240,232,224,0.1);  /* Light border */
+      --card-bg: #2a2a3e;      /* Product card background (dark mode) */
     }
 
     ::selection { background: var(--rose); color: var(--deep); }
@@ -1102,8 +1104,64 @@
       cursor: none;
       color: var(--muted);
       transition: color 0.2s;
+      padding: 0.5rem;
+      margin: -0.5rem;
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .cart-modal-close:hover { color: var(--deep); }
+    .delivery-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; }
+    .form-group input, .form-group textarea {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.95rem;
+      color: var(--deep);
+      background: var(--white);
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .delivery-total {
+      padding: 1rem;
+      background: var(--blush);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .delivery-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+    .delivery-total-row:last-child { margin-bottom: 0;; font-weight: 700; font-size: 1.1rem; }
+    .delivery-total-label { color: var(--muted); }
+    .delivery-total-value { color: var(--deep); font-family: 'Playfair Display', serif; }
+    .delivery-total-row:last-child .delivery-total-label { color: var(--deep); font-weight: 600; }
+    .delivery-total-row:last-child .delivery-total-value { color: var(--wine); font-size: 1.3rem; }
+    .form-submit-btn {
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+      color: var(--deep);
+      border: none;
+      border-radius: 8px;
+      font-family: 'Jost', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .form-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201, 151, 90, 0.35); }
     .cart-modal-body {
       padding: 1.5rem 2rem;
       max-height: 40vh;
@@ -1268,14 +1326,16 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(43,31,26,0.7);
+      background: rgba(43,31,26,0.8);
+      backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 1000;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.3s, visibility 0.3s;
+      transition: opacity 0.4s, visibility 0.4s;
+      padding: 1rem;
     }
     .modal-overlay.active {
       opacity: 1;
@@ -1284,33 +1344,43 @@
     .modal-content {
       background: var(--white);
       padding: 3rem 2.5rem;
-      border-radius: 4px;
+      border-radius: 16px;
       max-width: 420px;
-      width: 90%;
+      width: 100%;
       position: relative;
-      transform: translateY(-20px);
-      transition: transform 0.3s;
+      transform: translateY(30px) scale(0.95);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 25px 80px rgba(0,0,0,0.25);
     }
     .modal-overlay.active .modal-content {
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
     .modal-close {
       position: absolute;
-      top: 1rem;
-      right: 1rem;
+      top: 1.2rem;
+      right: 1.2rem;
       background: none;
       border: none;
-      font-size: 1.5rem;
-      cursor: none;
+      font-size: 1.8rem;
+      cursor: pointer;
       color: var(--muted);
       transition: color 0.2s;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
     }
-    .modal-close:hover { color: var(--deep); }
+    .modal-close:hover {
+      color: var(--deep);
+      background: var(--blush);
+    }
     .modal-title {
       font-family: 'Playfair Display', serif;
       font-size: 1.8rem;
       text-align: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
       color: var(--deep);
     }
     .modal-subtitle {
@@ -1320,68 +1390,162 @@
       margin-bottom: 2rem;
     }
     .form-group {
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.3rem;
     }
     .form-group label {
       display: block;
       font-size: 0.65rem;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--deep);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
     }
     .form-group input {
       width: 100%;
-      padding: 0.9rem 1rem;
+      padding: 0.95rem 1.1rem;
       border: 1px solid var(--border);
       background: var(--white);
       color: var(--deep);
       font-family: 'Jost', sans-serif;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      border-radius: 8px;
     }
     .form-group input:focus {
       border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,151,90,0.15);
     }
     .form-group input.error {
       border-color: var(--wine);
+      box-shadow: 0 0 0 3px rgba(122,63,63,0.1);
+    }
+    .form-group input::placeholder {
+      color: var(--muted);
+      opacity: 0.7;
     }
     .error-msg {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       color: var(--wine);
-      margin-top: 0.3rem;
+      margin-top: 0.5rem;
       display: none;
+      align-items: center;
+      gap: 0.4rem;
     }
-    .error-msg.visible { display: block; }
+    .error-msg.visible { display: flex; }
+    .error-msg svg {
+      flex-shrink: 0;
+    }
+    .password-strength {
+      margin-top: 0.6rem;
+      display: flex;
+      gap: 4px;
+    }
+    .strength-bar {
+      height: 4px;
+      flex: 1;
+      background: var(--border);
+      border-radius: 2px;
+      transition: background 0.3s;
+    }
+    .strength-bar.weak { background: var(--wine); }
+    .strength-bar.fair { background: var(--gold); }
+    .strength-bar.strong { background: #4CAF50; }
+    .strength-text {
+      font-size: 0.6rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      min-height: 0.8rem;
+    }
     .modal-submit {
       width: 100%;
       font-family: 'Jost', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.16em;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      padding: 1rem;
-      background: var(--deep);
+      padding: 1.05rem;
+      background: linear-gradient(135deg, var(--deep), var(--wine));
       color: var(--gold-lt);
       border: none;
-      cursor: none;
-      transition: background 0.25s;
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
       font-weight: 500;
-      margin-top: 0.5rem;
+      margin-top: 0.8rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(122,63,63,0.25);
+      position: relative;
+      overflow: hidden;
     }
-    .modal-submit:hover { background: var(--wine); }
+    .modal-submit:hover:not(:disabled) {
+      background: linear-gradient(135deg, var(--wine), var(--deep));
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(122,63,63,0.35);
+    }
+    .modal-submit:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    .modal-submit:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    .modal-submit .loading-spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--gold-lt);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
     .modal-switch {
       text-align: center;
-      margin-top: 1.5rem;
-      font-size: 0.8rem;
+      margin-top: 1.8rem;
+      font-size: 0.85rem;
       color: var(--muted);
     }
     .modal-switch a {
       color: var(--gold);
       text-decoration: none;
-      cursor: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: color 0.2s;
     }
-    .modal-switch a:hover { text-decoration: underline; }
+    .modal-switch a:hover {
+      color: var(--wine);
+      text-decoration: underline;
+    }
+    .success-message {
+      text-align: center;
+      padding: 1.5rem 0;
+      display: none;
+    }
+    .success-message.show {
+      display: block;
+      animation: fadeInUp 0.5s ease-out;
+    }
+    .success-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+    }
+    .success-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--deep);
+      margin-bottom: 0.5rem;
+    }
+    .success-text {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
 
     /* ========== USER PROFILE ========== */
     .user-profile {
@@ -1635,6 +1799,28 @@
       .mobile-bottom-nav .nav-item span:last-child { font-size: 0.58rem; }
       .mobile-bottom-nav svg { width: 18px; height: 18px; }
       .cart-badge { min-width: 14px; height: 14px; font-size: 0.5rem; }
+
+      /* Delivery Form */
+      .delivery-form { gap: 0.85rem; }
+      .form-group label { font-size: 0.7rem; }
+      .form-group input, .form-group textarea {
+        padding: 0.85rem 1rem;
+        font-size: 1rem;
+        border-radius: 10px;
+        min-height: 48px;
+      }
+      .form-group textarea { min-height: 90px; }
+      .form-row { grid-template-columns: 1fr; gap: 0.85rem; }
+      .delivery-total { padding: 0.9rem; margin-bottom: 0.9rem; }
+      .delivery-total-row { margin-bottom: 0.4rem; font-size: 0.85rem; }
+      .form-submit-btn {
+        padding: 1rem;
+        font-size: 0.95rem;
+        border-radius: 10px;
+        min-height: 52px;
+      }
+      .cart-modal-title { font-size: 1.25rem; }
+      .cart-modal-body { padding: 1rem 1.2rem; }
     }
 
     /* Small mobile */
@@ -1643,6 +1829,20 @@
       .hero-blob { width: 80%; font-size: 4rem; }
       .section-intro h2 { font-size: 1.6rem; }
       .about-stats { grid-template-columns: 1fr 1fr; }
+
+      /* Delivery Form - Extra small */
+      .delivery-form { gap: 0.75rem; }
+      .form-group input, .form-group textarea {
+        padding: 0.75rem 0.9rem;
+        font-size: 0.95rem;
+      }
+      .form-submit-btn {
+        padding: 0.9rem;
+        font-size: 0.9rem;
+      }
+      .cart-modal-title { font-size: 1.15rem; }
+      .delivery-total { padding: 0.75rem; }
+      .delivery-total-row { font-size: 0.8rem; }
     }
 
     /* Touch device optimizations */
@@ -1917,48 +2117,86 @@
   <div class="modal-overlay" id="authModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeAuthModal()">&times;</button>
-      <h2 class="modal-title" id="modalTitle">Welcome Back</h2>
-      <p class="modal-subtitle" id="modalSubtitle">Sign in to continue</p>
 
-      <!-- LOGIN FORM -->
-      <form id="loginForm">
-        <div class="form-group">
-          <label for="loginEmail">Email</label>
-          <input type="email" id="loginEmail" placeholder="your@email.com" required/>
-          <span class="error-msg" id="loginEmailError">Please enter a valid email</span>
-        </div>
-        <div class="form-group">
-          <label for="loginPassword">Password</label>
-          <input type="password" id="loginPassword" placeholder="Enter your password" required/>
-          <span class="error-msg" id="loginPasswordError">Password must be at least 6 characters</span>
-        </div>
-        <button type="submit" class="modal-submit">Sign In</button>
-      </form>
+      <!-- FORMS CONTAINER -->
+      <div id="authFormsContainer">
+        <h2 class="modal-title" id="modalTitle">Welcome Back</h2>
+        <p class="modal-subtitle" id="modalSubtitle">Sign in to continue</p>
 
-      <!-- SIGNUP FORM (hidden by default) -->
-      <form id="signupForm" style="display: none;">
-        <div class="form-group">
-          <label for="signupName">Name</label>
-          <input type="text" id="signupName" placeholder="Your name" required/>
-          <span class="error-msg" id="signupNameError">Please enter your name</span>
-        </div>
-        <div class="form-group">
-          <label for="signupEmail">Email</label>
-          <input type="email" id="signupEmail" placeholder="your@email.com" required/>
-          <span class="error-msg" id="signupEmailError">Please enter a valid email</span>
-        </div>
-        <div class="form-group">
-          <label for="signupPassword">Password</label>
-          <input type="password" id="signupPassword" placeholder="Create a password (min 6 characters)" required/>
-          <span class="error-msg" id="signupPasswordError">Password must be at least 6 characters</span>
-        </div>
-        <button type="submit" class="modal-submit">Create Account</button>
-      </form>
+        <!-- LOGIN FORM -->
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email" required/>
+            <span class="error-msg" id="loginEmailError">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><circle cx="12" cy="16" r="1" fill="white"/></svg>
+              Please enter a valid email address
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" required/>
+            <span class="error-msg" id="loginPasswordError">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><circle cx="12" cy="16" r="1" fill="white"/></svg>
+              Password must be at least 6 characters
+            </span>
+          </div>
+          <button type="submit" class="modal-submit" id="loginSubmitBtn">Sign In</button>
+        </form>
 
-      <div class="modal-switch">
-        <span id="switchText">Don't have an account?</span>
-        <a href="#" onclick="toggleAuthMode(); return false;" id="switchLink">Sign Up</a>
+        <!-- SIGNUP FORM (hidden by default) -->
+        <form id="signupForm" style="display: none;">
+          <div class="form-group">
+            <label for="signupName">Full Name</label>
+            <input type="text" id="signupName" placeholder="Your name" autocomplete="name" required/>
+            <span class="error-msg" id="signupNameError">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><circle cx="12" cy="16" r="1" fill="white"/></svg>
+              Please enter your name
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="signupEmail">Email</label>
+            <input type="email" id="signupEmail" placeholder="your@email.com" autocomplete="email" required/>
+            <span class="error-msg" id="signupEmailError">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><circle cx="12" cy="16" r="1" fill="white"/></svg>
+              Please enter a valid email address
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="signupPassword">Password</label>
+            <input type="password" id="signupPassword" placeholder="Create a password (min 6 characters)" autocomplete="new-password" required/>
+            <span class="error-msg" id="signupPasswordError">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><circle cx="12" cy="16" r="1" fill="white"/></svg>
+              Password must be at least 6 characters
+            </span>
+            <div class="password-strength" id="passwordStrength" style="display: none;">
+              <div class="strength-bar" id="strengthBar1"></div>
+              <div class="strength-bar" id="strengthBar2"></div>
+              <div class="strength-bar" id="strengthBar3"></div>
+              <div class="strength-bar" id="strengthBar4"></div>
+            </div>
+            <div class="strength-text" id="strengthText"></div>
+          </div>
+          <button type="submit" class="modal-submit" id="signupSubmitBtn">Create Account</button>
+        </form>
+
+        <div class="modal-switch">
+          <span id="switchText">Don't have an account?</span>
+          <a href="#" onclick="toggleAuthMode(); return false;" id="switchLink">Sign Up</a>
+        </div>
       </div>
+
+      <!-- SUCCESS MESSAGE (hidden by default) -->
+      <div id="authSuccessMessage" class="success-message">
+        <div class="success-icon">✨</div>
+        <h3 class="success-title" id="successTitle">Check Your Email</h3>
+        <p class="success-text" id="successText">We've sent a confirmation link to your email. Click the link to activate your account.</p>
+        <button class="modal-submit" onclick="resendConfirmationEmail()" id="resendBtn" style="margin-top: 1.5rem;">Resend Email</button>
+        <div class="modal-switch" style="margin-top: 1rem;">
+          <a href="#" onclick="toggleAuthMode(); return false;" id="backToAuthLink">Back to sign in</a>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -2056,14 +2294,21 @@
 
     /* ========== AUTH MODAL ========== */
     const authModal = document.getElementById('authModal');
+    const authFormsContainer = document.getElementById('authFormsContainer');
+    const authSuccessMessage = document.getElementById('authSuccessMessage');
     const loginForm = document.getElementById('loginForm');
     const signupForm = document.getElementById('signupForm');
     const modalTitle = document.getElementById('modalTitle');
     const modalSubtitle = document.getElementById('modalSubtitle');
     const switchText = document.getElementById('switchText');
     const switchLink = document.getElementById('switchLink');
+    const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+    const signupSubmitBtn = document.getElementById('signupSubmitBtn');
+    const successTitle = document.getElementById('successTitle');
+    const successText = document.getElementById('successText');
     let isLoginMode = true;
     let currentUser = null;
+    let pendingSignupEmail = '';
 
     // Login button - toggle login/logout
     document.getElementById('loginBtn').addEventListener('click', async () => {
@@ -2083,10 +2328,16 @@
 
     function openAuthModal() {
       authModal.classList.add('active');
+      // Reset to login mode when opening
+      if (!isLoginMode) toggleAuthMode();
     }
 
     function closeAuthModal() {
       authModal.classList.remove('active');
+      // Reset to login mode after closing
+      setTimeout(() => {
+        if (!isLoginMode) toggleAuthMode();
+      }, 300);
     }
 
     authModal.addEventListener('click', (e) => {
@@ -2095,7 +2346,10 @@
 
     function toggleAuthMode() {
       isLoginMode = !isLoginMode;
+
       if (isLoginMode) {
+        authFormsContainer.style.display = 'block';
+        authSuccessMessage.classList.remove('show');
         loginForm.style.display = 'block';
         signupForm.style.display = 'none';
         modalTitle.textContent = 'Welcome Back';
@@ -2103,6 +2357,8 @@
         switchText.textContent = "Don't have an account?";
         switchLink.textContent = 'Sign Up';
       } else {
+        authFormsContainer.style.display = 'block';
+        authSuccessMessage.classList.remove('show');
         loginForm.style.display = 'none';
         signupForm.style.display = 'block';
         modalTitle.textContent = 'Create Account';
@@ -2113,125 +2369,292 @@
       // Clear errors
       document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('visible'));
       document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
+      // Reset password strength
+      updatePasswordStrength('');
+    }
+
+    function showAuthSuccess(title, text, showResend = true) {
+      authFormsContainer.style.display = 'none';
+      successTitle.textContent = title;
+      successText.innerHTML = text;
+      authSuccessMessage.classList.add('show');
+      document.getElementById('resendBtn').style.display = showResend ? 'block' : 'none';
+    }
+
+    async function resendConfirmationEmail() {
+      const btn = document.getElementById('resendBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading-spinner"></span>Sending...';
+
+      try {
+        const { error } = await window.supabaseClient.auth.resend({
+          type: 'signup',
+          email: pendingSignupEmail
+        });
+
+        if (error) throw error;
+
+        toast.textContent = 'Confirmation email sent! ✦';
+        showToast();
+      } catch (error) {
+        toast.textContent = 'Failed to resend. Please try again ✦';
+        showToast();
+        console.error('Resend error:', error);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Resend Email';
+      }
+    }
+
+    function updatePasswordStrength(password) {
+      const strengthBars = [
+        document.getElementById('strengthBar1'),
+        document.getElementById('strengthBar2'),
+        document.getElementById('strengthBar3'),
+        document.getElementById('strengthBar4')
+      ];
+      const strengthText = document.getElementById('strengthText');
+      const strengthContainer = document.getElementById('passwordStrength');
+
+      if (password.length === 0) {
+        strengthContainer.style.display = 'none';
+        strengthText.textContent = '';
+        return;
+      }
+
+      strengthContainer.style.display = 'flex';
+
+      let strength = 0;
+      if (password.length >= 6) strength++;
+      if (password.length >= 10) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[0-9]/.test(password) || /[^A-Za-z0-9]/.test(password)) strength++;
+
+      const levels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+      const classes = ['', 'weak', 'fair', 'fair', 'strong'];
+
+      strengthBars.forEach((bar, i) => {
+        bar.className = 'strength-bar';
+        if (i < strength) {
+          bar.classList.add(classes[strength]);
+        }
+      });
+
+      strengthText.textContent = levels[strength];
+    }
+
+    function setLoading(button, loading, originalText) {
+      button.disabled = loading;
+      button.innerHTML = loading
+        ? '<span class="loading-spinner"></span>' + (isLoginMode ? 'Signing in...' : 'Creating account...')
+        : originalText;
+    }
+
+    function showFieldError(inputId, errorId) {
+      const input = document.getElementById(inputId);
+      const error = document.getElementById(errorId);
+      input.classList.add('error');
+      error.classList.add('visible');
+    }
+
+    function clearFieldError(inputId, errorId) {
+      const input = document.getElementById(inputId);
+      const error = document.getElementById(errorId);
+      input.classList.remove('error');
+      error.classList.remove('visible');
+    }
+
+    function clearAllErrors() {
+      document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('visible'));
+      document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
     }
 
     // Login form submission - Supabase Auth
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById('loginEmail').value;
+      const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value;
 
+      clearAllErrors();
       let valid = true;
-      if (!isValidEmail(email)) {
-        showError('loginEmail', 'loginEmailError');
+
+      if (!email) {
+        showFieldError('loginEmail', 'loginEmailError');
+        valid = false;
+      } else if (!isValidEmail(email)) {
+        showFieldError('loginEmail', 'loginEmailError');
         valid = false;
       }
-      if (password.length < 6) {
-        showError('loginPassword', 'loginPasswordError');
+
+      if (!password) {
+        showFieldError('loginPassword', 'loginPasswordError');
+        valid = false;
+      } else if (password.length < 6) {
+        showFieldError('loginPassword', 'loginPasswordError');
         valid = false;
       }
 
-      if (valid) {
-        try {
-          const { data, error } = await window.supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
-          });
+      if (!valid) return;
 
-          if (error) throw error;
+      setLoading(loginSubmitBtn, true, 'Sign In');
 
-          currentUser = { id: data.user.id, email: data.user.email };
-          updateUserDisplay({ name: data.user.email.split('@')[0], avatar: data.user.email.charAt(0).toUpperCase() });
-          closeAuthModal();
-          toast.textContent = `Welcome back! ✦`;
-          showToast();
-          loginForm.reset();
+      try {
+        const { data, error } = await window.supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
 
-          // Load user's cart from Supabase
-          await loadCartFromSupabase(data.user.id);
-        } catch (error) {
-          toast.textContent = 'Invalid email or password ✦';
-          showToast();
-          console.error('Login error:', error);
+        if (error) throw error;
+
+        // Get user profile
+        const { data: userData } = await window.supabaseClient
+          .from('users')
+          .select('name, avatar')
+          .eq('id', data.user.id)
+          .single();
+
+        if (userData) {
+          currentUser = { id: data.user.id, ...userData };
+          updateUserDisplay(userData);
+        } else {
+          currentUser = { id: data.user.id, email: data.user.email, name: email.split('@')[0], avatar: email.charAt(0).toUpperCase() };
+          updateUserDisplay({ name: email.split('@')[0], avatar: email.charAt(0).toUpperCase() });
         }
+
+        closeAuthModal();
+        toast.textContent = `Welcome back! ✦`;
+        showToast();
+        loginForm.reset();
+
+        // Load user's cart from Supabase
+        await loadCartFromSupabase(data.user.id);
+
+      } catch (error) {
+        setLoading(loginSubmitBtn, false, 'Sign In');
+
+        if (error.message?.includes('Invalid login credentials')) {
+          showFieldError('loginEmail', 'loginEmailError');
+          showFieldError('loginPassword', 'loginPasswordError');
+          toast.textContent = 'Invalid email or password ✦';
+        } else if (error.message?.includes('Email not confirmed')) {
+          toast.textContent = 'Please confirm your email first ✦';
+        } else {
+          toast.textContent = 'Sign in failed. Please try again ✦';
+        }
+        showToast();
+        console.error('Login error:', error);
       }
     });
 
     // Signup form submission - Supabase Auth
     signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = document.getElementById('signupName').value;
-      const email = document.getElementById('signupEmail').value;
+      const name = document.getElementById('signupName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
       const password = document.getElementById('signupPassword').value;
 
+      clearAllErrors();
       let valid = true;
-      if (!name.trim()) {
-        showError('signupName', 'signupNameError');
-        valid = false;
-      }
-      if (!isValidEmail(email)) {
-        showError('signupEmail', 'signupEmailError');
-        valid = false;
-      }
-      if (password.length < 6) {
-        showError('signupPassword', 'signupPasswordError');
+
+      if (!name) {
+        showFieldError('signupName', 'signupNameError');
         valid = false;
       }
 
-      if (valid) {
-        try {
-          const { data, error } = await window.supabaseClient.auth.signUp({
-            email: email,
-            password: password,
-            options: {
-              data: {
-                name: name
-              }
+      if (!email) {
+        showFieldError('signupEmail', 'signupEmailError');
+        valid = false;
+      } else if (!isValidEmail(email)) {
+        showFieldError('signupEmail', 'signupEmailError');
+        valid = false;
+      }
+
+      if (!password) {
+        showFieldError('signupPassword', 'signupPasswordError');
+        valid = false;
+      } else if (password.length < 6) {
+        showFieldError('signupPassword', 'signupPasswordError');
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      setLoading(signupSubmitBtn, true, 'Create Account');
+
+      try {
+        const { data, error } = await window.supabaseClient.auth.signUp({
+          email: email,
+          password: password,
+          options: {
+            data: {
+              name: name
             }
-          });
-
-          if (error) throw error;
-
-          // Save user profile to database
-          if (data.user) {
-            await window.supabaseClient
-              .from('users')
-              .insert([{ id: data.user.id, name: name, email: email, avatar: name.charAt(0).toUpperCase() }]);
-
-            currentUser = { id: data.user.id, name: name, email: email };
-            updateUserDisplay({ name: name, avatar: name.charAt(0).toUpperCase() });
-            closeAuthModal();
-            toast.textContent = `Welcome, ${name}! ✦`;
-            showToast();
-            signupForm.reset();
           }
-        } catch (error) {
-          if (error.message.includes('already registered')) {
-            toast.textContent = 'Email already registered ✦';
-          } else {
-            toast.textContent = 'Sign up failed ✦';
-          }
+        });
+
+        if (error) throw error;
+
+        if (data.user && !data.session) {
+          // Email confirmation required
+          pendingSignupEmail = email;
+          showAuthSuccess(
+            'Check Your Email',
+            `We've sent a confirmation link to<br><strong>${email}</strong><br><br>Click the link to activate your account and start shopping.`
+          );
+          signupForm.reset();
+        } else if (data.session) {
+          // Auto-confirmed - save user profile and redirect
+          const avatar = name.charAt(0).toUpperCase();
+          await window.supabaseClient
+            .from('users')
+            .upsert([{ id: data.user.id, name: name, email: email, avatar: avatar }]);
+
+          currentUser = { id: data.user.id, name: name, email: email, avatar: avatar };
+          updateUserDisplay({ name: name, avatar: avatar });
+
+          closeAuthModal();
+          toast.textContent = `Welcome, ${name}! ✦`;
           showToast();
-          console.error('Signup error:', error);
+          signupForm.reset();
+
+          // Load user's cart from Supabase
+          await loadCartFromSupabase(data.user.id);
         }
+
+      } catch (error) {
+        setLoading(signupSubmitBtn, false, 'Create Account');
+
+        if (error.message?.includes('already registered')) {
+          showFieldError('signupEmail', 'signupEmailError');
+          toast.textContent = 'Email already registered ✦';
+        } else if (error.message?.includes('invalid')) {
+          toast.textContent = 'Please check your information ✦';
+        } else {
+          toast.textContent = 'Sign up failed. Please try again ✦';
+        }
+        showToast();
+        console.error('Signup error:', error);
       }
     });
 
-    function isValidEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
+    // Password strength on input
+    document.getElementById('signupPassword').addEventListener('input', (e) => {
+      clearFieldError('signupPassword', 'signupPasswordError');
+      updatePasswordStrength(e.target.value);
+    });
 
-    function showError(inputId, errorId) {
-      document.getElementById(inputId).classList.add('error');
-      document.getElementById(errorId).classList.add('visible');
-    }
+    // Clear errors on input
+    ['loginEmail', 'loginPassword'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        clearFieldError(id, id + 'Error');
+      });
+    });
 
-    function updateUserDisplay(user) {
-      document.getElementById('loginBtn').style.display = 'none';
-      document.getElementById('userProfile').style.display = 'flex';
-      document.getElementById('userName').textContent = user.name;
-      document.getElementById('userAvatar').textContent = user.avatar;
-    }
+    ['signupName', 'signupEmail'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        clearFieldError(id, id + 'Error');
+      });
+    });
 
     /* ========== SUPABASE AUTH STATE & CART PERSISTENCE ========== */
     let cart = [];
@@ -2375,7 +2798,7 @@
         // Get product image or emoji
         const imageHtml = product?.image
           ? `<img src="${product.image}" alt="${item.name}" style="width:60px;height:60px;object-fit:cover;border-radius:4px;"/>`
-          : `<div style="width:60px;height:60px;background:${product?.bg || '#f0e8e0'};border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">${product?.emoji || '📦'}</div>`;
+          : `<div style="width:60px;height:60px;background:var(--card-bg);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">${product?.emoji || '📦'}</div>`;
 
         html += `
           <div class="cart-item" style="animation:slideInLeft 0.3s ease ${idx * 0.05}s both;">
@@ -2432,23 +2855,117 @@
       const orderId = generateOrderId();
       currentOrderId = orderId;
 
-      let message = 'Hello! I would like to place an order:\n\n';
-      message += `*Order ID: ${orderId}*\n\n`;
       let total = 0;
+      cart.forEach(item => {
+        const product = products.find(p => p.name === item.name);
+        const price = product ? product.price : 0;
+        total += price * item.quantity;
+      });
+
+      showDeliveryForm(orderId, total);
+    }
+
+    function showDeliveryForm(orderId, total) {
+      const modalOverlay = document.createElement('div');
+      modalOverlay.className = 'cart-modal-overlay active';
+      modalOverlay.id = 'deliveryModal';
+
+      let cartSummary = '';
+      cart.forEach(item => {
+        const product = products.find(p => p.name === item.name);
+        const price = product ? product.price : 0;
+        const itemTotal = price * item.quantity;
+        cartSummary += `<div class="delivery-total-row"><span class="delivery-total-label">${item.name} x${item.quantity}</span><span class="delivery-total-value">₹${itemTotal}</span></div>`;
+      });
+
+      modalOverlay.innerHTML = `
+        <div class="cart-modal">
+          <div class="cart-modal-header">
+            <h2 class="cart-modal-title">Delivery Details</h2>
+            <button class="cart-modal-close" onclick="closeDeliveryModal()">&times;</button>
+          </div>
+          <div class="cart-modal-body" style="max-height: 70vh;">
+            <div class="delivery-total">
+              ${cartSummary}
+              <div class="delivery-total-row">
+                <span class="delivery-total-label">Total</span>
+                <span class="delivery-total-value">₹${total}</span>
+              </div>
+            </div>
+            <form class="delivery-form" onsubmit="submitDeliveryForm(event, '${orderId}', ${total})">
+              <div class="form-group">
+                <label for="custName">Full Name *</label>
+                <input type="text" id="custName" name="name" required placeholder="Enter your full name">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="custPhone">Phone Number *</label>
+                  <input type="tel" id="custPhone" name="phone" required placeholder="10-digit mobile number" pattern="[0-9]{10}">
+                </div>
+                <div class="form-group">
+                  <label for="custPincode">Pincode *</label>
+                  <input type="text" id="custPincode" name="pincode" required placeholder="6-digit pincode" pattern="[0-9]{6}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="custAddress">Delivery Address *</label>
+                <textarea id="custAddress" name="address" required placeholder="House No., Street, Area, Landmark"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="custCity">City *</label>
+                <input type="text" id="custCity" name="city" required placeholder="City">
+              </div>
+              <div class="form-group">
+                <label for="custNotes">Additional Notes (Optional)</label>
+                <textarea id="custNotes" name="notes" placeholder="Any special instructions..."></textarea>
+              </div>
+              <button type="submit" class="form-submit-btn">Proceed to WhatsApp</button>
+            </form>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modalOverlay);
+    }
+
+    function closeDeliveryModal() {
+      const modal = document.getElementById('deliveryModal');
+      if (modal) modal.remove();
+    }
+
+    function submitDeliveryForm(event, orderId, total) {
+      event.preventDefault();
+      closeDeliveryModal();
+
+      const form = event.target;
+      const formData = new FormData(form);
+      const name = formData.get('name');
+      const phone = formData.get('phone');
+      const pincode = formData.get('pincode');
+      const address = formData.get('address');
+      const city = formData.get('city');
+      const notes = formData.get('notes');
+
+      let message = `🛍️ *New Order*\n\n`;
+      message += `*Delivery Details:*\n`;
+      message += `👤 Name: ${name}\n`;
+      message += `📱 Phone: ${phone}\n`;
+      message += `📍 Address: ${address}, ${city} - ${pincode}\n`;
+      if (notes) message += `📝 Notes: ${notes}\n`;
+      message += `\n*Order Items:*\n`;
 
       cart.forEach(item => {
         const product = products.find(p => p.name === item.name);
         const price = product ? product.price : 0;
         const itemTotal = price * item.quantity;
-        total += itemTotal;
-        message += `• ${item.name} x${item.quantity} - Rs.${itemTotal}\n`;
+        message += `\n• ${item.name} x${item.quantity} - ₹${itemTotal}\n`;
+        if (product?.image) message += `🖼️ Image: ${product.image}\n`;
       });
 
-      message += `\n*Total Amount: Rs.${total}*`;
-      message += '\n\nPlease confirm my order and share payment details.';
+      message += `\n💰 *Total Amount: ₹${total}*`;
 
-      const phone = '919032972114';
-      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      const waPhone = '919032972114';
+      const url = `https://wa.me/${waPhone}?text=${encodeURIComponent(message)}`;
       window.open(url, '_blank');
 
       // Save order to Supabase if logged in
@@ -2460,6 +2977,12 @@
           total: total,
           status: 'pending',
           payment_method: 'whatsapp',
+          delivery_name: name,
+          delivery_phone: phone,
+          delivery_address: address,
+          delivery_city: city,
+          delivery_pincode: pincode,
+          delivery_notes: notes,
           created_at: new Date().toISOString()
         });
       }
@@ -2472,60 +2995,9 @@
         return;
       }
 
-      // Generate order ID
-      const orderId = generateOrderId();
-      currentOrderId = orderId;
-
-      let total = 0;
-      let orderDetails = '';
-
-      cart.forEach(item => {
-        const product = products.find(p => p.name === item.name);
-        const price = product ? product.price : 0;
-        const itemTotal = price * item.quantity;
-        total += itemTotal;
-        orderDetails += `${item.name} x${item.quantity}, `;
-      });
-
-      // Remove trailing comma
-      orderDetails = orderDetails.slice(0, -2);
-
-      // Your UPI ID
-      const upiId = '@oksbi';
-      const merchantName = 'Aesthetic Accessories';
-
-      // Generate UPI deep link with exact amount and order note
-      const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${total}&cu=INR&tn=${encodeURIComponent(orderId + ': ' + orderDetails)}`;
-
-      // Try to open UPI app directly
-      toast.textContent = `Opening UPI app for ₹${total}... ✦`;
+      toast.textContent = 'UPI Payment Coming Soon ✦';
       showToast();
-
-      // Save order to Supabase if logged in
-      if (currentUser) {
-        saveOrder({
-          id: orderId,
-          user_id: currentUser.id,
-          items: cart,
-          total: total,
-          status: 'pending_payment',
-          payment_method: 'upi',
-          upi_url: upiUrl,
-          created_at: new Date().toISOString()
-        });
-      }
-
-      // Attempt to open UPI app
-      setTimeout(() => {
-        window.location.href = upiUrl;
-
-        // Fallback: Show modal after a delay
-        setTimeout(() => {
-          if (document.visibilityState === 'visible') {
-            showUPIPaymentModal(total, upiId, merchantName, orderDetails, orderId);
-          }
-        }, 1500);
-      }, 500);
+      return;
     }
 
     function showUPIPaymentModal(total, upiId, merchantName, orderDetails, orderId) {
@@ -2556,7 +3028,7 @@
             ${isDesktop ? `
               <div style="margin-bottom:1.5rem;">
                 <p style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem;">Scan to Pay</p>
-                <div id="qrContainer" style="background:white;padding:1rem;border-radius:8px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,0.1);"></div>
+                <div id="qrContainer" style="background:var(--white);padding:1rem;border-radius:8px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,0.1);"></div>
                 <p style="font-size:0.7rem;color:var(--muted);margin-top:1rem;">Scan with any UPI app</p>
               </div>
             ` : `
@@ -2751,14 +3223,14 @@
        4. Use format: https://drive.google.com/uc?export=view&id=FILE_ID
        ============================================ */
     const products = [
-      { name:'Purple Crocket',   category:'earrings',  price:200,  oldPrice:300, image:'https://i.ibb.co/gZyhsbXy/rose.jpg', bg:'#f0e8f0', pill:'sale',},
-      { name:'Dainty Gold Ring',      category:'rings',     price:299,  image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',   bg:'#f5eddf', pill:'new',},
-      { name:'Layered Sun Necklace',  category:'necklaces', price:449,  image:'https://i.ibb.co/rGJsM7Ng/Braclet-1.jpg',   bg:'#fdf0e0', pill:'fav',},
-      { name:'Claw Hair Clip',        category:'hair',      price:199,  image:'https://i.ibb.co/JF88G8g6/keychain-1.jpg',   bg:'#eaf0f5', pill:'new',},
-      { name:'Star Stud Set',         category:'earrings',  price:249,  oldPrice:349, image:'https://i.ibb.co/ymDLSVSv/keychain-5.jpg',  bg:'#f5f0e0',},
-      { name:'Beaded Bracelet',       category:'bracelets', price:179,  image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',   bg:'#fae8ea', pill:null,},
-      { name:'Twisted Hoop Earrings', category:'earrings',  price:379,  image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',   bg:'#edf5ed', pill:'new',},
-      { name:'Crystal Hair Pins',     category:'hair',      price:149,  oldPrice:199, image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',  bg:'#f5edf5',},
+      { name:'Purple Crocket',   category:'earrings',  price:200,  oldPrice:300, image:'https://i.ibb.co/gZyhsbXy/rose.jpg', bg:'var(--card-bg)', pill:'sale',},
+      { name:'Dainty Gold Ring',      category:'rings',     price:299,  image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',   bg:'var(--card-bg)', pill:'new',},
+      { name:'Layered Sun Necklace',  category:'necklaces', price:449,  image:'https://i.ibb.co/rGJsM7Ng/Braclet-1.jpg',   bg:'var(--card-bg)', pill:'fav',},
+      { name:'Claw Hair Clip',        category:'hair',      price:199,  image:'https://i.ibb.co/JF88G8g6/keychain-1.jpg',   bg:'var(--card-bg)', pill:'new',},
+      { name:'Star Stud Set',         category:'earrings',  price:249,  oldPrice:349, image:'https://i.ibb.co/ymDLSVSv/keychain-5.jpg',  bg:'var(--card-bg)',},
+      { name:'Beaded Bracelet',       category:'bracelets', price:179,  image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',   bg:'var(--card-bg)', pill:null,},
+      { name:'Twisted Hoop Earrings', category:'earrings',  price:379,  image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',   bg:'var(--card-bg)', pill:'new',},
+      { name:'Crystal Hair Pins',     category:'hair',      price:149,  oldPrice:199, image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',  bg:'var(--card-bg)',},
     ];
 
     let currentFilter = 'all';
