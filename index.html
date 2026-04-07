@@ -2061,8 +2061,9 @@
       <!-- FILTER & SORT -->
       <div class="filter-row">
         <button class="filt active" onclick="filterCards('all',this)">All</button>
-        <button class="filt" onclick="filterCards('rings',this)">Rings</button>
-        <button class="filt" onclick="filterCards('earrings',this)">Earrings</button>
+        <button class="filt active" onclick="filterCards('Flowers',this)">Flowers</button>
+        <button class="filt" onclick="filterCards('Bottles',this)">Bottles</button>
+        <button class="filt" onclick="filterCards('key chains',this)">Key Chains</button>
         <button class="filt" onclick="filterCards('necklaces',this)">Necklaces</button>
         <button class="filt" onclick="filterCards('bracelets',this)">Bracelets</button>
         <button class="filt" onclick="filterCards('hair',this)">Hair Accessories</button>
@@ -3492,15 +3493,16 @@
        4. Use format: https://drive.google.com/uc?export=view&id=FILE_ID
        ============================================ */
     const products = [
-      { name:'Purple Crocket',   category:'earrings',  price:200,  oldPrice:300, image:'https://i.ibb.co/gZyhsbXy/rose.jpg', bg:'var(--card-bg)', pill:'sale',},
-      { name:'Dainty Gold Ring',      category:'rings',     price:299,  image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',   bg:'var(--card-bg)', pill:'new',},
-      { name:'Layered Sun Necklace',  category:'necklaces', price:449,  image:'https://i.ibb.co/rGJsM7Ng/Braclet-1.jpg',   bg:'var(--card-bg)', pill:'fav',},
-      { name:'Claw Hair Clip',        category:'hair',      price:199,  image:'https://i.ibb.co/JF88G8g6/keychain-1.jpg',   bg:'var(--card-bg)', pill:'new',},
-      { name:'Star Stud Set',         category:'earrings',  price:249,  oldPrice:349, image:'https://i.ibb.co/ymDLSVSv/keychain-5.jpg',  bg:'var(--card-bg)',},
-      { name:'Beaded Bracelet',       category:'bracelets', price:179,  image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',   bg:'var(--card-bg)', pill:null,},
-      { name:'Twisted Hoop Earrings', category:'earrings',  price:379,  image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',   bg:'var(--card-bg)', pill:'new',},
-      { name:'Crystal Hair Pins',     category:'hair',      price:149,  oldPrice:199, image:'https://i.ibb.co/9HmbTX5J/Braclet-2.jpg',  bg:'var(--card-bg)',},
-    ];
+      { name:'Hair Clip',               category:'hair accessories',price: 20,  oldprice:30,  image:'https://i.ibb.co/RGBkwqcw/soft-clips.jpg',            bg:'var(--card-bg)', pill:'sale'},  
+      { name:'Purple Crocket',          category:'Flowers',         price:199,  oldPrice:219, image:'https://i.ibb.co/fzk9WkKQ/Purple-Crocket.jpg',        bg:'var(--card-bg)', pill:'sale',},
+      { name:'Rose Crocket',            category:'Flowers',         price:199,  oldPrice:219, image:'https://i.ibb.co/pr1P6WMR/Rose-Crocket.jpg',          bg:'var(--card-bg)', pill:'new',},
+      { name:'Nice Water Bottle',       category:'Bottles',         price:449,                image:'https://i.ibb.co/rR3QtxSp/Nice-Bottle.jpg',           bg:'var(--card-bg)', pill:'fav',},
+      { name:'Pink Bunny Bottle',       category:'Bottles',         price:199,                image:'https://i.ibb.co/ch4nGfxZ/Bottle-3.jpg',              bg:'var(--card-bg)', pill:'new',},
+      { name:'Blue Bunny Bottle',       category:'Bottles',         price:249,  oldPrice:349, image:'https://i.ibb.co/BVJJdCmR/Bottle-1.jpg',              bg:'var(--card-bg)',},
+      { name:'Motivational Bottle',     category:'Bottles',         price:179,                image:'https://i.ibb.co/WW3npzfW/Motivational-Bottle.jpg',   bg:'var(--card-bg)', pill:null,},
+      { name:'Custamization Key Chain', category:'key chains',      price:10,                 image:'https://i.ibb.co/RTNB17F1/key-chain.jpg',             bg:'var(--card-bg)', pill:'new',},
+      { name:'Custamization Bracelets', category:'bracelets',       price: 70,                image:'https://i.ibb.co/38DtcD1/braclete.jpg',               bg:'var(--card-bg)',},
+      ];
 
     let currentFilter = 'all';
 
