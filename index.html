@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Æsthetic Accessories | Handcrafted Jewelry & Accessories in Ongole</title>
   <meta name="description" content="Handpicked jewelry and accessories for the aesthetic soul. Rings, earrings, necklaces, bracelets & more. Free shipping on orders over ₹999. Based in Ongole."/>
   <meta name="keywords" content="jewelry, accessories, earrings, rings, necklaces, bracelets, hair accessories, aesthetic, Ongole, handcrafted, artisan"/>
@@ -57,7 +57,11 @@
     }
 
     ::selection { background: var(--rose); color: var(--deep); }
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
 
     /* ========== RUPEE SYMBOL STYLING ========== */
     .rupee {
@@ -137,6 +141,14 @@
       background: var(--white);
       color: var(--deep);
       cursor: none;
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: clip;
+    }
+
+    img, picture, video {
+      max-width: 100%;
+      height: auto;
     }
 
     /* ========== CUSTOM CURSOR ========== */
@@ -201,7 +213,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1rem 5vw;
+      padding: max(1rem, env(safe-area-inset-top)) max(5vw, env(safe-area-inset-right)) 1rem max(5vw, env(safe-area-inset-left));
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
@@ -249,7 +261,8 @@
       font-weight: 300;
       margin-top: 2px;
     }
-    nav {
+    /* Main header links — scoped so it never conflicts with .mobile-bottom-nav */
+    #mainNav {
       display: flex;
       gap: 2.2rem;
       font-size: 0.75rem;
@@ -257,22 +270,30 @@
       text-transform: uppercase;
       font-weight: 400;
     }
-    nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
-    nav a:hover { color: var(--gold); }
-    .header-cta {
-      font-size: 0.68rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 0.6rem 1.4rem;
-      border: 1px solid var(--deep);
-      color: var(--deep);
-      background: transparent;
-      cursor: none;
-      transition: all 0.25s;
-      font-family: 'Jost', sans-serif;
-      font-weight: 400;
+    #mainNav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    #mainNav a:hover { color: var(--gold); }
+
+    .mobile-menu-btn {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      margin: -0.25rem;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      min-height: 44px;
+      -webkit-tap-highlight-color: transparent;
     }
-    .header-cta:hover { background: var(--deep); color: var(--gold-lt); }
+    .mobile-menu-btn span {
+      width: 24px;
+      height: 2px;
+      background: var(--deep);
+      transition: all 0.3s;
+    }
 
     /* ========== CART COUNTER ========== */
     .cart-wrapper {
@@ -601,6 +622,7 @@
       flex-direction: column;
       position: relative;
       overflow: hidden;
+      min-width: 0;
       animation: cardIn 0.55s ease both;
       transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -900,7 +922,8 @@
       border: 1px solid rgba(255,255,255,0.18);
       background: rgba(255,255,255,0.06);
       color: var(--white);
-      width: 20rem;
+      width: min(20rem, 100%);
+      max-width: 100%;
       outline: none;
       letter-spacing: 0.05em;
     }
@@ -982,15 +1005,6 @@
       background: var(--deep);
       color: var(--gold-lt);
     }
-    @media (max-width: 768px) {
-      .theme-toggle {
-        bottom: 1rem;
-        left: 1rem;
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-      }
-    }
 
     /* ========== SCROLL TO TOP ========== */
     .scroll-top {
@@ -1029,7 +1043,10 @@
       position: fixed;
       bottom: 2rem;
       left: 50%;
-      transform: translateX(-50%) translateY(5rem);
+      /* Hidden by default: fully off-screen + invisible (transform-only was peeking on mobile) */
+      transform: translate3d(-50%, calc(100% + 24px), 0);
+      opacity: 0;
+      visibility: hidden;
       background: var(--deep);
       color: var(--gold-lt);
       font-size: 0.7rem;
@@ -1037,10 +1054,17 @@
       text-transform: uppercase;
       padding: 0.9rem 2rem;
       z-index: 500;
-      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: opacity 0.3s ease, visibility 0.3s ease,
+        transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
       pointer-events: none;
+      max-width: calc(100vw - 2rem);
+      box-sizing: border-box;
     }
-    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.show {
+      transform: translate3d(-50%, 0, 0);
+      opacity: 1;
+      visibility: visible;
+    }
 
     /* ========== CART MODAL ========== */
     .cart-modal-overlay {
@@ -1055,6 +1079,10 @@
       opacity: 0;
       visibility: hidden;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: max(0.5rem, env(safe-area-inset-top)) max(0.5rem, env(safe-area-inset-right)) max(0.5rem, env(safe-area-inset-bottom)) max(0.5rem, env(safe-area-inset-left));
+      box-sizing: border-box;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .cart-modal-overlay.active {
       opacity: 1;
@@ -1063,8 +1091,8 @@
     .cart-modal {
       background: var(--white);
       max-width: 520px;
-      width: 90%;
-      max-height: 80vh;
+      width: min(100%, 520px);
+      max-height: min(85vh, 100dvh - 2rem);
       overflow: hidden;
       border-radius: 12px;
       transform: translateY(-30px) scale(0.95);
@@ -1164,8 +1192,9 @@
     .form-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201, 151, 90, 0.35); }
     .cart-modal-body {
       padding: 1.5rem 2rem;
-      max-height: 40vh;
+      max-height: min(50vh, 60dvh);
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .cart-item {
       display: flex;
@@ -1335,7 +1364,9 @@
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.4s, visibility 0.4s;
-      padding: 1rem;
+      padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .modal-overlay.active {
       opacity: 1;
@@ -1346,11 +1377,23 @@
       padding: 3rem 2.5rem;
       border-radius: 16px;
       max-width: 420px;
-      width: 100%;
+      width: min(100%, 420px);
+      max-height: min(90vh, 100dvh - 2rem);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       position: relative;
       transform: translateY(30px) scale(0.95);
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       box-shadow: 0 25px 80px rgba(0,0,0,0.25);
+      margin: auto;
+    }
+
+    #productPreviewModal .modal-content {
+      max-width: min(500px, 100%);
+      padding: 0;
+    }
+    #productPreviewModal .modal-content .modal-close {
+      z-index: 2;
     }
     .modal-overlay.active .modal-content {
       transform: translateY(0) scale(1);
@@ -1754,6 +1797,7 @@
     @media (max-width: 1024px) {
       .products { grid-template-columns: repeat(2, 1fr); }
       .hero-title { font-size: 3.5rem; }
+      .testi-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     /* Tablet & Mobile */
@@ -1765,8 +1809,8 @@
       .hero-title { font-size: 2.8rem; }
       .hero-body { font-size: 0.85rem; }
 
-      /* Mobile Navigation */
-      nav {
+      /* Mobile: collapsible panel for #mainNav only (hamburger). Desktop: links stay in header. */
+      #mainNav {
         display: none;
         position: fixed;
         top: 70px;
@@ -1780,31 +1824,71 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         z-index: 150;
       }
-      nav.active { display: flex; animation: slideDown 0.3s ease; }
+      #mainNav.active { display: flex; animation: slideDown 0.3s ease; }
       @keyframes slideDown {
         from { opacity: 0; transform: translateY(-10px); }
         to { opacity: 1; transform: translateY(0); }
       }
       .mobile-menu-btn {
         display: flex;
-        flex-direction: column;
-        gap: 5px;
-        background: none;
-        border: none;
-        cursor: none;
-        padding: 0.5rem;
-      }
-      .mobile-menu-btn span {
-        width: 24px;
-        height: 2px;
-        background: var(--deep);
-        transition: all 0.3s;
+        cursor: auto;
       }
       .mobile-menu-btn.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
       .mobile-menu-btn.active span:nth-child(2) { opacity: 0; }
       .mobile-menu-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
 
-      .header-cta { display: none; }
+      .mobile-bottom-nav {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      #main-content {
+        padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
+      }
+
+      .theme-toggle {
+        bottom: calc(4.75rem + env(safe-area-inset-bottom));
+        left: max(1rem, env(safe-area-inset-left));
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+      .scroll-top {
+        bottom: calc(4.75rem + env(safe-area-inset-bottom));
+        right: max(1rem, env(safe-area-inset-right));
+      }
+      .toast {
+        bottom: calc(5.25rem + env(safe-area-inset-bottom));
+        padding-left: 1rem;
+        padding-right: 1rem;
+        text-align: center;
+        line-height: 1.4;
+      }
+      /* Keep hidden state below bottom nav + safe area */
+      .toast:not(.show) {
+        transform: translate3d(-50%, calc(100% + 32px), 0);
+      }
+
+      .filter-row {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        padding: 1rem max(5vw, env(safe-area-inset-left)) 1.5rem max(5vw, env(safe-area-inset-right));
+        gap: 0.45rem;
+      }
+      .filter-row::-webkit-scrollbar { height: 3px; }
+      .filter-row .filt { flex-shrink: 0; }
+      .filter-row .sort-wrapper { flex-shrink: 0; margin-left: auto; }
+
+      #productPreviewModal .preview-image {
+        height: min(240px, 42vh);
+      }
+      #productPreviewModal .preview-emoji-wrap {
+        height: min(200px, 35vh);
+      }
 
       .about-strip { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 5vw; }
       .about-stats { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
@@ -1814,16 +1898,22 @@
       .testi-grid { grid-template-columns: 1fr; }
       .testi { padding: 1.5rem 1.2rem; }
 
-      .newsletter { padding: 3rem 5vw; }
+      .newsletter { padding: 3rem max(5vw, env(safe-area-inset-left)) 3rem max(5vw, env(safe-area-inset-right)); flex-direction: column; align-items: stretch; }
       .nl-text h3 { font-size: 1.5rem; }
-      .nl-form { flex-direction: column; width: 100%; }
+      .nl-form { flex-direction: column; width: 100%; max-width: 24rem; margin: 0 auto; }
       .nl-form input { width: 100%; margin-bottom: 0.8rem; }
       .nl-form button { width: 100%; }
 
-      .section-intro { padding: 3rem 5vw 2rem; }
-      .filter-row { padding: 1rem 5vw 1.5rem; gap: 0.4rem; }
+      .section-intro { padding: 3rem max(5vw, env(safe-area-inset-left)) 2rem max(5vw, env(safe-area-inset-right)); }
       .filt { font-size: 0.55rem; padding: 0.4rem 0.9rem; }
-      .sort-wrapper { margin-left: 0; width: 100%; justify-content: center; }
+      .sort-wrapper { margin-left: 0; width: auto; justify-content: center; flex-shrink: 0; }
+
+      footer {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem max(5vw, env(safe-area-inset-left)) max(2rem, env(safe-area-inset-bottom)) max(5vw, env(safe-area-inset-right));
+      }
+      .footer-links { flex-wrap: wrap; justify-content: center; gap: 1rem 1.5rem; }
     }
 
     /* Small Mobile - Premium Feel */
@@ -1850,7 +1940,7 @@
       .product-info { padding: 0.7rem 0.6rem; }
       .product-cat { font-size: 0.45rem; letter-spacing: 0.08em; }
       .product-name { font-size: 0.8rem; line-height: 1.25; font-weight: 500; }
-      .product-desc { font-size: 0.65rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0.4rem; }
+      .product-desc { font-size: 0.65rem; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0.4rem; }
       .price-now { font-size: 0.95rem; font-weight: 600; }
       .price-old { font-size: 0.6rem; }
       .wishlist-btn { font-size: 1.1rem; padding: 0.2rem; }
@@ -1877,9 +1967,10 @@
       .modal-content { padding: 1.8rem 1.3rem; width: 90%; border-radius: 16px; }
       .modal-title { font-size: 1.3rem; }
 
-      /* Touch targets */
-      button, a, input, select { min-height: 44px; min-width: 44px; }
-      .filt, .sort-select { min-height: 40px; }
+      /* Touch targets — avoid min-width on all links (breaks footer) */
+      button, input, select, textarea { min-height: 44px; }
+      .filt, .sort-select { min-height: 40px; min-width: auto; }
+      .mobile-bottom-nav .nav-item { min-width: 44px; min-height: 44px; justify-content: center; }
       .cart-icon { padding: 0.5rem; }
 
       /* Stats */
@@ -1954,13 +2045,22 @@
       .delivery-total-row { font-size: 0.8rem; }
     }
 
+    /* Short landscape phones / small-height viewports */
+    @media (max-height: 520px) and (orientation: landscape) and (max-width: 960px) {
+      .hero { min-height: auto; }
+      .hero-right { height: min(42vh, 260px); }
+      .hero-left { padding-top: 1.25rem; padding-bottom: 1.5rem; }
+      .modal-content { max-height: min(95dvh, 100vh); }
+      .cart-modal { max-height: min(92dvh, 100vh); }
+    }
+
     /* Touch device optimizations */
     @media (hover: none) and (pointer: coarse) {
       body, a, button, input, select { cursor: auto !important; }
       .cursor, .cursor-ring { display: none; }
       .product-card:hover .emoji-wrap { transform: none; }
       .product-card:hover .product-img img { transform: none; }
-      .btn-primary:hover, .btn-ghost:hover, .login-btn:hover, .header-cta:hover { transform: none; }
+      .btn-primary:hover, .btn-ghost:hover, .login-btn:hover { transform: none; }
     }
   </style>
 </head>
@@ -2009,7 +2109,6 @@
     </nav>
 
     <div class="cart-wrapper">
-      <button class="header-cta" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop Now</button>
       <span class="cart-icon" id="cartIcon" aria-label="Shopping cart" role="button" tabindex="0">🛒
         <span class="cart-count" id="cartCount">0</span>
       </span>
@@ -2061,12 +2160,12 @@
       <!-- FILTER & SORT -->
       <div class="filter-row">
         <button class="filt active" onclick="filterCards('all',this)">All</button>
-        <button class="filt active" onclick="filterCards('Flowers',this)">Flowers</button>
+        <button class="filt" onclick="filterCards('Flowers',this)">Flowers</button>
         <button class="filt" onclick="filterCards('Bottles',this)">Bottles</button>
         <button class="filt" onclick="filterCards('key chains',this)">Key Chains</button>
         <button class="filt" onclick="filterCards('necklaces',this)">Necklaces</button>
         <button class="filt" onclick="filterCards('bracelets',this)">Bracelets</button>
-        <button class="filt" onclick="filterCards('hair',this)">Hair Accessories</button>
+        <button class="filt" onclick="filterCards('hair accessories',this)">Hair Accessories</button>
         <div class="sort-wrapper">
           <span class="sort-label">Sort:</span>
           <select class="sort-select" id="sortSelect" onchange="sortProducts()" aria-label="Sort products">
@@ -2126,8 +2225,8 @@
         <p>New drops, exclusive offers, and aesthetic inspo — straight to your inbox.</p>
       </div>
       <div class="nl-form">
-        <input type="email" placeholder="your@email.com"/>
-        <button onclick="subscribeNewsletter(this)">Subscribe</button>
+        <input type="email" id="newsletterEmail" name="email" autocomplete="email" placeholder="your@email.com" aria-label="Email address for newsletter"/>
+        <button type="button" onclick="subscribeNewsletter(this)">Subscribe</button>
       </div>
     </section>
 
@@ -2245,7 +2344,7 @@
         <form id="loginForm">
           <div class="form-group">
             <label for="loginEmail">Email</label>
-            <input type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email" required/>
+            <input type="email" id="loginEmail" name="email" placeholder="your@email.com" autocomplete="email" required/>
             <span class="error-msg" id="loginEmailError">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><circle cx="12" cy="16" r="1" fill="white"/></svg>
               Please enter a valid email address
@@ -2253,7 +2352,7 @@
           </div>
           <div class="form-group">
             <label for="loginPassword">Password</label>
-            <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" required/>
+            <input type="password" id="loginPassword" name="password" placeholder="Enter your password" autocomplete="current-password" required/>
             <span class="error-msg" id="loginPasswordError">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><circle cx="12" cy="16" r="1" fill="white"/></svg>
               Password must be at least 6 characters
@@ -2266,7 +2365,7 @@
         <form id="signupForm" style="display: none;">
           <div class="form-group">
             <label for="signupName">Full Name</label>
-            <input type="text" id="signupName" placeholder="Your name" autocomplete="name" required/>
+            <input type="text" id="signupName" name="name" placeholder="Your name" autocomplete="name" required/>
             <span class="error-msg" id="signupNameError">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><circle cx="12" cy="16" r="1" fill="white"/></svg>
               Please enter your name
@@ -2274,7 +2373,7 @@
           </div>
           <div class="form-group">
             <label for="signupEmail">Email</label>
-            <input type="email" id="signupEmail" placeholder="your@email.com" autocomplete="email" required/>
+            <input type="email" id="signupEmail" name="email" placeholder="your@email.com" autocomplete="email" required/>
             <span class="error-msg" id="signupEmailError">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><circle cx="12" cy="16" r="1" fill="white"/></svg>
               Please enter a valid email address
@@ -2282,7 +2381,7 @@
           </div>
           <div class="form-group">
             <label for="signupPassword">Password</label>
-            <input type="password" id="signupPassword" placeholder="Create a password (min 6 characters)" autocomplete="new-password" required/>
+            <input type="password" id="signupPassword" name="password" placeholder="Create a password (min 6 characters)" autocomplete="new-password" required/>
             <span class="error-msg" id="signupPasswordError">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><circle cx="12" cy="16" r="1" fill="white"/></svg>
               Password must be at least 6 characters
@@ -2336,9 +2435,6 @@
         detectSessionInUrl: true
       }
     });
-
-    console.log("✓ Supabase initialized");
-    console.log("URL:", SUPABASE_URL);
   </script>
 
   <!-- JAVASCRIPT -->
@@ -2462,15 +2558,31 @@
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
+    function escapeHtml(str) {
+      if (str == null) return '';
+      const d = document.createElement('div');
+      d.textContent = String(str);
+      return d.innerHTML;
+    }
+
+    /** JSON.stringify for safe use inside double-quoted HTML attributes */
+    function htmlAttrJson(val) {
+      return JSON.stringify(val).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    }
+
     function updateUserDisplay(userData) {
       const userProfile = document.getElementById('userProfile');
       const loginBtn = document.getElementById('loginBtn');
       if (userProfile && userData) {
         userProfile.style.display = 'flex';
-        userProfile.innerHTML = `
-          <div class="user-avatar">${userData.avatar || userData.name?.charAt(0).toUpperCase() || 'U'}</div>
-          <span class="user-name">${userData.name || 'User'}</span>
-        `;
+        userProfile.replaceChildren();
+        const avatar = document.createElement('div');
+        avatar.className = 'user-avatar';
+        avatar.textContent = userData.avatar || userData.name?.charAt(0).toUpperCase() || 'U';
+        const nameEl = document.createElement('span');
+        nameEl.className = 'user-name';
+        nameEl.textContent = userData.name || 'User';
+        userProfile.append(avatar, nameEl);
         loginBtn.style.display = 'none';
       }
     }
@@ -2757,7 +2869,7 @@
           pendingSignupEmail = email;
           showAuthSuccess(
             'Check Your Email',
-            `We've sent a confirmation link to<br><strong>${email}</strong><br><br>Click the link to activate your account and start shopping.`
+            `We've sent a confirmation link to<br><strong>${escapeHtml(email)}</strong><br><br>Click the link to activate your account and start shopping.`
           );
           signupForm.reset();
         } else if (data.session) {
@@ -2992,7 +3104,7 @@
         localStorage.setItem('cart', JSON.stringify(cart));
       }
 
-      toast.textContent = `"${name}" added ✦`;
+      toast.textContent = 'Added to cart ✦';
       showToast();
     }
 
@@ -3032,22 +3144,23 @@
 
         // Get product image or emoji
         const imageHtml = product?.image
-          ? `<img src="${product.image}" alt="${item.name}" style="width:60px;height:60px;object-fit:cover;border-radius:4px;"/>`
+          ? `<img src="${escapeHtml(product.image)}" alt="${escapeHtml(item.name)}" style="width:60px;height:60px;object-fit:cover;border-radius:4px;"/>`
           : `<div style="width:60px;height:60px;background:var(--card-bg);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">${product?.emoji || '📦'}</div>`;
 
+        const nameAttr = htmlAttrJson(item.name);
         html += `
           <div class="cart-item" style="animation:slideInLeft 0.3s ease ${idx * 0.05}s both;">
             <div style="display:flex;align-items:center;gap:1rem;flex:1;">
               ${imageHtml}
               <div class="cart-item-info">
-                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-name">${escapeHtml(item.name)}</div>
                 <div class="cart-item-price"><span class="rupee">&#8377;</span>${price}</div>
               </div>
             </div>
             <div class="cart-item-quantity">
-              <button class="qty-btn" onclick="updateCartQuantity('${item.name}', -1)">−</button>
+              <button type="button" class="qty-btn" onclick="updateCartQuantity(${nameAttr}, -1)">−</button>
               <span class="qty-value">${item.quantity}</span>
-              <button class="qty-btn" onclick="updateCartQuantity('${item.name}', 1)">+</button>
+              <button type="button" class="qty-btn" onclick="updateCartQuantity(${nameAttr}, 1)">+</button>
             </div>
             <div class="cart-item-total"><span class="rupee">&#8377;</span>${itemTotal}</div>
           </div>
@@ -3112,7 +3225,7 @@
         const product = products.find(p => p.name === item.name);
         const price = product ? product.price : 0;
         const itemTotal = price * item.quantity;
-        cartSummary += `<div class="delivery-total-row"><span class="delivery-total-label">${item.name} x${item.quantity}</span><span class="delivery-total-value">₹${itemTotal}</span></div>`;
+        cartSummary += `<div class="delivery-total-row"><span class="delivery-total-label">${escapeHtml(item.name)} x${item.quantity}</span><span class="delivery-total-value">₹${itemTotal}</span></div>`;
       });
 
       modalOverlay.innerHTML = `
@@ -3500,8 +3613,8 @@
       { name:'Pink Bunny Bottle',       category:'Bottles',         price:89,   oldPrice:149, image:'https://i.ibb.co/ch4nGfxZ/Bottle-3.jpg',              bg:'var(--card-bg)', pill:'new',},
       { name:'Blue Bunny Bottle',       category:'Bottles',         price:89,   oldPrice:149, image:'https://i.ibb.co/BVJJdCmR/Bottle-1.jpg',              bg:'var(--card-bg)', pill:'new'},
       { name:'Motivational Bottle',     category:'Bottles',         price:149,  oldPrice:249, image:'https://i.ibb.co/WW3npzfW/Motivational-Bottle.jpg',   bg:'var(--card-bg)', pill:'sale',},
-      { name:'Custamization Key Chain', category:'key chains',      price:10,                 image:'https://i.ibb.co/RTNB17F1/key-chain.jpg',             bg:'var(--card-bg)', pill:'new',},
-      { name:'Custamization Bracelets', category:'bracelets',       price: 70,                image:'https://i.ibb.co/38DtcD1/braclete.jpg',               bg:'var(--card-bg)',},
+      { name:'Customization Key Chain', category:'key chains',      price:10,                 image:'https://i.ibb.co/RTNB17F1/key-chain.jpg',             bg:'var(--card-bg)', pill:'new',},
+      { name:'Customization Bracelets', category:'bracelets',       price: 70,                image:'https://i.ibb.co/38DtcD1/braclete.jpg',               bg:'var(--card-bg)',},
       ];
 
     let currentFilter = 'all';
@@ -3534,9 +3647,11 @@
 
         // Check if product has image or emoji
         const imageHtml = p.image
-          ? `<img src="${p.image}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/>
+          ? `<img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/>
              <div class="emoji-wrap" style="display:none;">${p.emoji || '📦'}</div>`
-          : `<div class="emoji-wrap">${p.emoji}</div>`;
+          : `<div class="emoji-wrap">${p.emoji || '📦'}</div>`;
+        const addLabel = `Add ${p.name} to cart`;
+        const nameAttr = htmlAttrJson(p.name);
 
         const card = document.createElement('div');
         card.className = 'product-card';
@@ -3547,14 +3662,14 @@
           <div class="product-img" style="background:${p.bg}" aria-hidden="true">
             ${imageHtml}
             ${pillHtml}
-            <div class="overlay">
-              <button class="overlay-btn" onclick="addToCart('${p.name}')" aria-label="Add ${p.name} to cart">Add to Cart</button>
+            <div class="overlay" onclick="event.stopPropagation()">
+              <button type="button" class="overlay-btn" onclick="event.stopPropagation(); addToCart(${nameAttr})" aria-label="${escapeHtml(addLabel)}">Add to Cart</button>
             </div>
           </div>
           <div class="product-info">
-            <div class="product-cat">${p.category}</div>
-            <div class="product-name">${p.name}</div>
-            <div class="product-desc">${p.desc}</div>
+            <div class="product-cat">${escapeHtml(p.category)}</div>
+            <div class="product-name">${escapeHtml(p.name)}</div>
+            <div class="product-desc">${p.desc != null ? escapeHtml(p.desc) : ''}</div>
             <div class="product-footer">
               <div class="price-block">
                 <span class="price-now">₹${p.price}</span>
@@ -3598,24 +3713,25 @@
       const pillHtml = p.pill ? `<span class="preview-pill ${pillMap[p.pill]}">${pillLabel[p.pill]}</span>` : '';
       const oldPriceHtml = p.oldPrice ? `<span class="preview-old-price">₹${p.oldPrice}</span>` : '';
       const imageHtml = p.image
-        ? `<img src="${p.image}" alt="${p.name}" class="preview-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/>
+        ? `<img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" class="preview-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/>
            <div class="preview-emoji-wrap" style="display:none;">${p.emoji || '📦'}</div>`
         : `<div class="preview-emoji-wrap">${p.emoji || '📦'}</div>`;
+      const nameAttr = htmlAttrJson(p.name);
 
       content.innerHTML = `
         ${imageHtml}
         <div class="preview-content">
-          <div class="preview-category">${p.category}</div>
-          <h2 class="preview-name">${p.name}</h2>
-          ${p.desc ? `<p class="preview-description">${p.desc}</p>` : ''}
+          <div class="preview-category">${escapeHtml(p.category)}</div>
+          <h2 class="preview-name">${escapeHtml(p.name)}</h2>
+          ${p.desc ? `<p class="preview-description">${escapeHtml(p.desc)}</p>` : ''}
           <div class="preview-price-row">
             <span class="preview-price">₹${p.price}</span>
             ${oldPriceHtml}
             ${pillHtml}
           </div>
           <div class="preview-actions">
-            <button class="preview-add-btn" onclick="addToCart('${p.name}'); closeProductPreview();">Add to Cart</button>
-            <button class="preview-wish-btn" onclick="toggleWish(this)">♡</button>
+            <button type="button" class="preview-add-btn" onclick="event.stopPropagation(); closeProductPreview(); addToCart(${nameAttr})">Add to Cart</button>
+            <button type="button" class="preview-wish-btn" onclick="toggleWish(this)">♡</button>
           </div>
         </div>`;
       modal.classList.add('active');
@@ -3632,7 +3748,7 @@
 
     /* ========== NEWSLETTER SUBSCRIPTION ========== */
     function subscribeNewsletter(btn) {
-      const input = btn.previousElementSibling;
+      const input = document.getElementById('newsletterEmail');
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (!emailRegex.test(input.value)) {
@@ -3656,7 +3772,6 @@
         btn.style.color = 'var(--deep)';
       }, 3000);
     }
-
     /* ========== INITIALIZE ========== */
     initializeGuestCart();
     renderProducts();
